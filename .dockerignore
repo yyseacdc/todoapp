@@ -1,0 +1,38 @@
+# Version control
+.git
+.gitignore
+
+# Node / frontend build artifacts
+node_modules
+frontend/node_modules
+frontend/dist
+dist
+build
+*.log
+
+# Python / backend artifacts
+__pycache__
+*.pyc
+*.pyo
+.venv
+venv
+env
+*.egg-info
+.pytest_cache
+.mypy_cache
+
+# Environment & credentials
+.env
+.env.*
+backend/.env
+frontend/.env.local
+
+# Coverage & reports
+coverage
+frontend/reports
+
+# Misc
+.DS_Store
+Thumbs.db
+.idea
+.vscode
