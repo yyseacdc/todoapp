@@ -1278,3 +1278,1737 @@
 *** End Patch
 [2m2025-10-17T20:38:02.509745Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Derive short branch name and run create-new-feature script to generate spec scaffold"},{"status":"completed","step":"Draft specification content using template and user input"},{"status":"completed","step":"Create and validate specification quality checklist, iterating on spec as needed"},{"status":"completed","step":"Summarize outputs with branch, spec path, and readiness"}]}
 [2m2025-10-17T20:38:07.477934Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","git status -sb"],"workdir":"/home/yiy/workspace/playground/todoapp"}
+[2m2025-10-17T20:43:24.806395Z[0m [32m INFO[0m ERR: No such file or directory (os error 2)
+[2m2025-10-17T20:44:20.383477Z[0m [32m INFO[0m ERR: No such file or directory (os error 2)
+[2m2025-10-17T20:45:42.549222Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"pending","step":"Run setup script to obtain plan scaffolding and branch info"},{"status":"pending","step":"Populate implementation plan with technical context and constitution checks, resolving clarifications via research outputs"},{"status":"pending","step":"Generate Phase 0 research artifact and resolve unknowns"},{"status":"pending","step":"Design data model, API contracts, quickstart, and update agent context"},{"status":"pending","step":"Summarize outputs including branch, plan path, and generated artifacts"}]}
+[2m2025-10-17T20:45:45.840990Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc",".specify/scripts/bash/setup-plan.sh --json"],"workdir":"/home/yiy/workspace/playground/todoapp","timeout_ms":120000}
+[2m2025-10-17T20:45:52.306068Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat /home/yiy/workspace/playground/todoapp/specs/001-specify-scripts-bash/plan.md"],"workdir":"/home/yiy/workspace/playground/todoapp"}
+[2m2025-10-17T20:45:54.827302Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat /home/yiy/workspace/playground/todoapp/specs/001-specify-scripts-bash/spec.md"],"workdir":"/home/yiy/workspace/playground/todoapp"}
+[2m2025-10-17T20:46:48.236605Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/001-specify-scripts-bash/plan.md
+@@
+-# Implementation Plan: [FEATURE]
+-
+-**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
+-**Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
++# Implementation Plan: Modern Todo Reminders
++
++**Branch**: `001-specify-scripts-bash` | **Date**: 2025-10-17 | **Spec**: [spec.md](./spec.md)
++**Input**: Feature specification from `/specs/001-specify-scripts-bash/spec.md`
+ 
+ **Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
+ 
+ ## Summary
+ 
+-[Extract from feature spec: primary requirement + technical approach from research]
++Deliver a lightweight, modern todo web application that lets users capture tasks with reminders, complete or delete tasks, and review upcoming reminders. The solution must emphasize minimal dependencies: React + Tailwind on the frontend, FastAPI with SQLite on the backend, and containerized deployment with Docker while preserving accessibility, test-first development, and performance budgets defined in the constitution and feature spec.
+ 
+ ## Technical Context
+ 
+ <!--
+   ACTION REQUIRED: Replace the content in this section with the technical details
+   for the project. The structure here is presented in advisory capacity to guide
+   the iteration process.
+ -->
+ 
+-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
+-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
+-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
+-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
+-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
+-**Project Type**: [single/web/mobile - determines source structure]  
+-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
+-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
+-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
++**Language/Version**: TypeScript 5.x (frontend), Python 3.12 (backend)  
++**Primary Dependencies**: React 18, Vite, Tailwind CSS, FastAPI, Pydantic, SQLAlchemy 2.x (minimal use), Alembic (schema migrations)  
++**Storage**: SQLite (lightweight relational DB) with file persistence and WAL mode  
++**Testing**: Vitest + React Testing Library (component), Playwright (e2e accessibility/perf audits), pytest + pytest-asyncio + HTTPX (API), coverage thresholds ≥90% touched files  
++**Target Platform**: Responsive web app served via containerized FastAPI backend with static frontend assets, Dockerized deployment  
++**Project Type**: Web application with separate frontend (`frontend/`) and backend (`backend/`) projects plus shared contracts  
++**Performance Goals**: Dashboard Lighthouse ≥90 (perf) / ≥95 (accessibility); reminder delivery within 60s of schedule; task toggle <200 ms; initial page load <1.8s on 3G Fast; per-route bundle ≤150 KB  
++**Constraints**: Minimal third-party libraries beyond mandated stack; Docker-based dev/test/prod parity; accessible UI meeting WCAG 2.1 AA; offline task queueing for reminders; feature-flagged vertical slices  
++**Scale/Scope**: Single-team launch targeting individual productivity use-cases; support for ~1k active reminders per user; MVP across 3 primary user stories
+ 
+ ## Constitution Check
+ 
+ *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+ 
+-- Confirm **Consistent, Accessible Experience**: planned UI references the design system tokens, responsive breakpoints, and WCAG AA acceptance checks.
+-- Confirm **Component-Driven Web Architecture**: frontend stack uses TypeScript + component framework with typed API client strategy captured in plan.
+-- Confirm **Test-First Delivery**: enumerate the automated tests to be written first (component, contract, integration) and the failure expected before implementation; include target coverage levels.
+-- Confirm **Production-Grade Code Craftsmanship**: document linting, formatting, ADR updates, and review strategy that will guard maintainability for this work.
+-- Confirm **Incremental Value Delivery**: user stories are vertical slices with independent deployments, each mapped to a feature flag if needed.
+-- Confirm **Performance-Focused Experience**: outline performance budgets, load expectations, and validation tooling (Lighthouse, bundle analysis, load tests).
+-- Confirm **Sustainable Quality Automation**: CI jobs, static analysis, telemetry, and accessibility audits required for this work are documented and resourced.
++- **Consistent, Accessible Experience**: Tailwind design tokens stored in `frontend/src/styles/tokens.ts` ensure consistent typography/color spacing; responsive behavior validated via Storybook and Playwright accessibility suites before merge.  
++- **Component-Driven Web Architecture**: React + TypeScript with Vite; component stories + tests colocated; typed API client generated from OpenAPI ensuring consistent contracts.  
++- **Test-First Delivery**: For each story, author failing Vitest component tests, Playwright accessibility audits, and pytest contract tests before implementation; enforce ≥90% coverage touched files and 100% coverage for reminder utilities.  
++- **Production-Grade Code Craftsmanship**: ESLint + Prettier (minimal configs), Ruff for Python linting, ADRs recorded under `docs/adrs/`; mandatory peer reviews with focus checklist.  
++- **Incremental Value Delivery**: Each user story delivered behind feature flags via configuration toggles; deployable slices include UI, API, and telemetry updates.  
++- **Performance-Focused Experience**: Performance budgets tracked in `frontend/perf-budget.json`; Lighthouse CI pipeline gating; backend load tests via Locust targeting 200 ms p95; in-app reminder polling optimized to avoid bundle bloat.  
++- **Sustainable Quality Automation**: CI runs lint, typecheck, tests, coverage, Lighthouse, pa11y audits, dependency checks (npm audit, pip-audit). Telemetry instrumentation for reminder events configured via minimal analytics SDK.
+ 
+ ## Project Structure
+ 
+ ### Documentation (this feature)
+@@
+ └── tests/
+ 
+ frontend/
+ ├── src/
+ │   ├── components/
+ │   ├── pages/
+ │   └── services/
+ └── tests/
+ 
+ # [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
+ api/
+ └── [same as backend above]
+ 
+ ios/ or android/
+ └── [platform-specific structure: feature modules, UI flows, platform tests]
+ ```
+ 
+-**Structure Decision**: [Document the selected structure and reference the real
+-directories captured above]
++**Structure Decision**: Use the Web application split. Frontend assets reside in `frontend/src` with tests in `frontend/tests`. Backend FastAPI service under `backend/src` with routers, services, and models; backend tests in `backend/tests`. Shared contracts generated in `specs/001-specify-scripts-bash/contracts/` and consumed by both layers.
+ 
+ ## Complexity Tracking
+ 
+ *Fill ONLY if Constitution Check has violations that must be justified*
+ 
+ | Violation | Why Needed | Simpler Alternative Rejected Because |
+ |-----------|------------|-------------------------------------|
+ | — | — | — |
+*** End Patch
+[2m2025-10-17T20:46:53.455771Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Delete File: specs/001-specify-scripts-bash/plan.md
+*** End Patch
+[2m2025-10-17T20:47:11.377709Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: specs/001-specify-scripts-bash/plan.md
++# Implementation Plan: Modern Todo Reminders
++
++**Branch**: `001-specify-scripts-bash` | **Date**: 2025-10-17 | **Spec**: [spec.md](./spec.md)  
++**Input**: Feature specification from `/specs/001-specify-scripts-bash/spec.md`
++
++**Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
++
++## Summary
++
++Deliver a lightweight, modern todo web application that lets users capture tasks with reminders, complete or delete tasks, and review upcoming reminders. The solution must emphasize minimal dependencies: React + Tailwind on the frontend, FastAPI with SQLite on the backend, and containerized deployment with Docker while preserving accessibility, test-first development, and performance budgets defined in the constitution and feature spec.
++
++## Technical Context
++
++**Language/Version**: TypeScript 5.x (frontend), Python 3.12 (backend)  
++**Primary Dependencies**: React 18, Vite, Tailwind CSS, FastAPI, Pydantic, SQLAlchemy 2.x (minimal usage), Alembic (schema migrations)  
++**Storage**: SQLite (lightweight relational DB) with file persistence and WAL mode  
++**Testing**: Vitest + React Testing Library (component), Playwright (accessibility + e2e), pytest + pytest-asyncio + HTTPX (API), coverage thresholds ≥90% touched files  
++**Target Platform**: Responsive web app served via containerized FastAPI backend with static frontend assets, Dockerized deployment  
++**Project Type**: Web application with separate frontend (`frontend/`) and backend (`backend/`) projects plus shared contracts  
++**Performance Goals**: Dashboard Lighthouse ≥90 (performance) / ≥95 (accessibility); reminder delivery ≤60 s; task toggle <200 ms; initial page load <1.8 s on 3G Fast; per-route bundle ≤150 KB  
++**Constraints**: Minimal third-party libraries beyond mandated stack; Docker-based dev/test/prod parity; WCAG 2.1 AA compliance; offline task queueing for reminders; vertical slices behind feature flags  
++**Scale/Scope**: MVP for individual productivity with ~1k active reminders per user; three primary user stories; single engineering squad
++
++## Constitution Check
++
++*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
++
++- **Consistent, Accessible Experience**: Tailwind tokens defined centrally (`frontend/src/styles/tokens.ts`) and enforced via Storybook, Vitest a11y assertions, and Playwright AXE audits prior to merge. Responsive breakpoints (mobile/tablet/desktop) verified per acceptance scenarios.  
++- **Component-Driven Web Architecture**: React + TypeScript component library with colocated stories/tests; typed API client generated from OpenAPI spec; backend exposes REST endpoints aligning with contracts.  
++- **Test-First Delivery**: Before implementation, create failing Vitest component tests, Playwright accessibility/performance checks, and pytest contract/integration suites. Enforce ≥90% coverage on touched files and 100% on reminder scheduling utilities; CI blocks on unmet thresholds.  
++- **Production-Grade Code Craftsmanship**: Lint/format via ESLint + Prettier (frontend) and Ruff + Black (backend) with minimal configs. ADRs recorded under `docs/adrs/` for reminder scheduling and Docker decisions. Required peer reviews with checklist covering maintainability, accessibility, performance.  
++- **Incremental Value Delivery**: Each user story shipped as vertical slice (task capture, completion flows, reminder dashboard) behind configuration-based feature flags; independent deployments validated through staging.  
++- **Performance-Focused Experience**: Performance budgets tracked in `frontend/perf-budget.json`; Lighthouse CI gating; backend load testing via Locust targeting 200 ms p95; reminder polling uses event-driven notifications to prevent bundle bloat.  
++- **Sustainable Quality Automation**: CI pipeline runs lint, type-check, unit/component/integration tests, Lighthouse, pa11y, npm audit, pip-audit. Telemetry events for creation/completion/reminders feed into analytics dashboard reviewed monthly.
++
++## Project Structure
++
++### Documentation (this feature)
++
++```
++specs/001-specify-scripts-bash/
++├── plan.md
++├── research.md
++├── data-model.md
++├── quickstart.md
++├── contracts/
++└── tasks.md
++```
++
++### Source Code (repository root)
++
++```
++backend/
++├── src/
++│   ├── api/
++│   ├── services/
++│   ├── models/
++│   └── util/
++└── tests/
++
++frontend/
++├── src/
++│   ├── components/
++│   ├── pages/
++│   ├── services/
++│   └── styles/
++└── tests/
++
++contracts/
++└── openapi/
++```
++
++**Structure Decision**: Adopt the web application split. Frontend assets and tests reside under `frontend/`, backend FastAPI service and tests under `backend/`, and generated API contracts shared via `contracts/openapi/` folder.
++
++## Complexity Tracking
++
++| Violation | Why Needed | Simpler Alternative Rejected Because |
++|-----------|------------|-------------------------------------|
++| — | — | — |
+*** End Patch
+[2m2025-10-17T20:47:37.956596Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: specs/001-specify-scripts-bash/research.md
++# Research: Modern Todo Reminders
++
++## Reminder Scheduling without Heavy Dependencies
++- **Decision**: Implement reminder dispatch using FastAPI's startup background task that runs an `asyncio` loop checking due reminders every 30 seconds, paired with WebSocket push notifications for active sessions.  
++- **Rationale**: Native FastAPI/Starlette tooling keeps the stack lightweight, aligns with minimal dependency constraint, and suffices for the MVP reminder volume (≈1k active reminders per user).  
++- **Alternatives considered**:  
++  - APScheduler: robust job management but adds an extra dependency and configuration surface that exceeds "minimal libraries" requirement.  
++  - Celery/Redis workers: scalable but heavy infrastructure and violates lightweight constraint.  
++  - Client-side polling only: simpler but risks missed reminders when user tab inactive and fails reliability expectation.
++
++## Persistence Strategy
++- **Decision**: Use SQLite in WAL mode with SQLAlchemy 2.0 declarative models and Alembic migrations.  
++- **Rationale**: SQLite is the lightest relational database fulfilling user request; WAL mode supports concurrent reads/writes for reminder checks; SQLAlchemy delivers safety and maintainability with minimal additional dependency overhead (already bundled with Alembic).  
++- **Alternatives considered**:  
++  - Raw `sqlite3` module: fewer dependencies but increased risk of SQL injection and duplicated query logic; harder to maintain migrations.  
++  - PostgreSQL: powerful but heavier operational footprint than required.  
++  - DuckDB: analytical focus, lacks robust concurrent write support for prod web workloads.
++
++## Frontend Architecture
++- **Decision**: Scaffold React 18 + Vite with Tailwind CSS and TypeScript, using component-level design tokens and Storybook for visual validation.  
++- **Rationale**: Meets directive to use React and Tailwind while keeping toolchain light (Vite dev server). TypeScript enforces data contracts per constitution; Storybook supports accessibility/performance reviews with minimal overhead.  
++- **Alternatives considered**:  
++  - Next.js: adds SSR/ISR complexity unnecessary for MVP; heavier dependency graph.  
++  - CRA: deprecated and heavier build output.  
++  - Pure vanilla CSS modules: would conflict with Tailwind requirement and reduce consistency.
++
++## In-App Reminder Delivery Channel
++- **Decision**: Provide real-time reminder updates via FastAPI WebSocket endpoint with fallback long-polling API for clients unable to keep sockets open.  
++- **Rationale**: WebSockets are built into FastAPI/Starlette, impose no extra dependency, and enable timely in-app notifications meeting UX expectations. Fallback ensures accessibility for restrictive networks.  
++- **Alternatives considered**:  
++  - Server-Sent Events: simpler but limited browser support for reconnection handling compared to WebSocket.  
++  - Push notifications via Service Workers: powerful but requires additional setup (VAPID keys) and conflicts with "minimal libs" for MVP.  
++  - Polling-only approach: increases network load and may miss near-real-time delivery goals.
++
++## Containerization Approach
++- **Decision**: Use Docker multi-stage builds—one image for frontend (Node + Vite build → static assets) and one for backend (Python slim base), orchestrated via docker-compose for local parity.  
++- **Rationale**: Satisfies "use Docker when possible," keeps runtime images slim (production images copy built assets only) and simplifies onboarding through `docker compose up`.  
++- **Alternatives considered**:  
++  - Single combined image: simpler but produces larger image and couples build steps, harming cache efficiency.  
++  - Podman or non-container dev: violates user directive for Docker usage.  
++  - Kubernetes manifests: heavyweight for MVP scope.
++
++## Testing & Automation Strategy
++- **Decision**: Adopt Vitest + React Testing Library, Playwright for end-to-end and accessibility checks, pytest with coverage + schemathesis for contract testing, automated via GitHub Actions matrix.  
++- **Rationale**: These tools align with constitution’s test-first mandate, remain relatively lightweight, and integrate well with Vite/FastAPI without introducing excessive dependencies.  
++- **Alternatives considered**:  
++  - Jest: heavier configuration when using Vite.  
++  - Cypress: powerful but larger install footprint compared to Playwright for cross-browser tests.  
++  - Locust alternative artillery: Locust integrates with Python ecosystem already in use.
+*** End Patch
+[2m2025-10-17T20:48:01.559737Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: specs/001-specify-scripts-bash/data-model.md
++# Data Model: Modern Todo Reminders
++
++## Overview
++Lightweight relational schema backing task management, reminder scheduling, and activity tracking using SQLite (WAL mode). Models leverage SQLAlchemy 2.0 declarative mappings with Pydantic DTOs for API contracts.
++
++## Entities
++
++### Task
++- **Primary Key**: `id` (UUID, stored as TEXT)
++- **Fields**:
++  - `title` (TEXT, 1-120 chars, trimmed)
++  - `notes` (TEXT, optional, max 2000 chars)
++  - `due_at` (TIMESTAMP WITH TIMEZONE, optional)
++  - `priority` (ENUM: `low`, `normal`, `high`; default `normal`)
++  - `status` (ENUM: `active`, `completed`, `deleted`; default `active`)
++  - `created_at` (TIMESTAMP WITH TIMEZONE, default current)
++  - `updated_at` (TIMESTAMP WITH TIMEZONE, auto-managed)
++  - `completed_at` (TIMESTAMP WITH TIMEZONE, nullable)
++  - `reminder_id` (FK → Reminder.id, nullable)
++  - `user_id` (UUID TEXT, ties to auth service; assumption: provided by upstream)
++- **Relationships**:
++  - One-to-one with `Reminder` (optional)
++  - One-to-many with `ReminderActivity` (through Reminder)
++- **Validation**:
++  - Titles sanitized against duplicate whitespace; duplicates within 5 minutes trigger confirmation (handled at service layer).
++  - When `status = completed`, `completed_at` must be set and `reminder_id` nullified.
++  - When `status = deleted`, soft-delete logic ensures record retained but excluded from default queries.
++- **State Transitions**:
++  - `active` → `completed`: allowed; sets `completed_at`, cancels reminder.
++  - `completed` → `active`: allowed via undo; clears `completed_at`, reinstates reminder if provided.
++  - `active/completed` → `deleted`: allowed; cascades to mark reminder cancelled.
++
++### Reminder
++- **Primary Key**: `id` (UUID TEXT)
++- **Fields**:
++  - `task_id` (FK → Task.id, unique)
++  - `scheduled_for` (TIMESTAMP WITH TIMEZONE, future constraint)
++  - `channel` (ENUM: `in_app` default; placeholder for future expansion)
++  - `status` (ENUM: `scheduled`, `sent`, `cancelled`, `snoozed`)
++  - `snooze_until` (TIMESTAMP WITH TIMEZONE, nullable, must be > current time if set)
++  - `created_at`, `updated_at`
++- **Relationships**:
++  - One-to-one with `Task`
++  - One-to-many with `ReminderActivity`
++- **Validation**:
++  - `scheduled_for` must be ≥ current time + 1 minute (prevent past reminders).
++  - `status` changes enforced by service rules (e.g., only `scheduled` reminders can become `sent`).
++
++### ReminderActivity
++- **Primary Key**: `id` (UUID TEXT)
++- **Fields**:
++  - `reminder_id` (FK → Reminder.id, indexed)
++  - `event_type` (ENUM: `delivered`, `dismissed`, `snoozed`, `error`)
++  - `event_time` (TIMESTAMP WITH TIMEZONE)
++  - `metadata` (JSONB-like TEXT storing key-value pairs, optional)
++- **Relationships**:
++  - Many-to-one to `Reminder`
++- **Validation**:
++  - `event_time` auto-populated at insert.
++  - `metadata` validated against JSON schema ensuring keys (`channel`, `error_code`, etc.) if present.
++
++### UserPreference (Read-only reference)
++- **Primary Key**: `user_id` (UUID TEXT)
++- **Fields**:
++  - `default_reminder_offset_minutes` (INTEGER default 30)
++  - `timezone` (TEXT, Olson format)
++  - `notification_channels` (JSON array; currently supports `in_app`)
++- **Purpose**: Sourced from broader platform; consumed to determine scheduling defaults. No write endpoints in this feature.
++
++## Derived Views / Materialized Data
++- **Upcoming Reminders View**: Query combining `Task`, `Reminder` for `status = scheduled` within next 48 hours, ordered by `scheduled_for`.
++- **Completed Tasks View**: Filter `Task` with `status = completed`, sorted by `completed_at` desc for history tab.
++
++## Data Integrity Rules
++- Cascading rules: deleting a task (`status = deleted`) sets associated reminder `status = cancelled` and prevents further scheduling. Hard deletes run via nightly maintenance job outside MVP scope.
++- Reminders cannot exist without associated Task; enforce via FK constraint with cascade delete.
++- ReminderActivity entries cannot be added once reminder is `cancelled` unless event_type = `error` for logging.
++
++## Migrations Strategy
++- Use Alembic auto-generated migrations with manual review to ensure minimal SQL footprint.
++- Initialize base migration creating tables and necessary indexes (`task_due_at_idx`, `reminder_scheduled_idx`, `activity_reminder_idx`).
++- Future schema changes must document ADR updates and migration rollback plans.
+*** End Patch
+[2m2025-10-17T20:48:12.374264Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","mkdir -p specs/001-specify-scripts-bash/contracts"],"workdir":"/home/yiy/workspace/playground/todoapp"}
+[2m2025-10-17T20:48:49.294708Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: specs/001-specify-scripts-bash/contracts/openapi.yaml
++openapi: 3.1.0
++info:
++  title: Modern Todo Reminders API
++  version: 0.1.0
++  description: >
++    Lightweight REST API for managing tasks, reminders, and reminder activity in the Modern Todo Reminders application.
++servers:
++  - url: https://api.todoapp.local/v1
++    description: Production (placeholder)
++  - url: http://localhost:8000/v1
++    description: Local development
++
++tags:
++  - name: Tasks
++    description: Task lifecycle management
++  - name: Reminders
++    description: Reminder scheduling and interaction
++  - name: Activity
++    description: Reminder activity logs
++
++paths:
++  /tasks:
++    post:
++      tags: [Tasks]
++      summary: Create a new task with optional reminder
++      requestBody:
++        required: true
++        content:
++          application/json:
++            schema:
++              $ref: '#/components/schemas/CreateTaskRequest'
++      responses:
++        '201':
++          description: Task created
++          content:
++            application/json:
++              schema:
++                $ref: '#/components/schemas/TaskResponse'
++        '400':
++          description: Validation error
++          content:
++            application/json:
++              schema:
++                $ref: '#/components/schemas/ErrorResponse'
++    get:
++      tags: [Tasks]
++      summary: List tasks by status
++      parameters:
++        - in: query
++          name: status
++          schema:
++            type: string
++            enum: [active, completed, deleted]
++          description: Filter by task status; defaults to active
++      responses:
++        '200':
++          description: List of tasks
++          content:
++            application/json:
++              schema:
++                type: object
++                properties:
++                  data:
++                    type: array
++                    items:
++                      $ref: '#/components/schemas/TaskResponse'
++  /tasks/{taskId}:
++    patch:
++      tags: [Tasks]
++      summary: Update task details
++      parameters:
++        - $ref: '#/components/parameters/TaskId'
++      requestBody:
++        required: true
++        content:
++          application/json:
++            schema:
++              $ref: '#/components/schemas/UpdateTaskRequest'
++      responses:
++        '200':
++          description: Updated task
++          content:
++            application/json:
++              schema:
++                $ref: '#/components/schemas/TaskResponse'
++        '404':
++          description: Task not found
++          content:
++            application/json:
++              schema:
++                $ref: '#/components/schemas/ErrorResponse'
++    delete:
++      tags: [Tasks]
++      summary: Delete (soft delete) a task
++      parameters:
++        - $ref: '#/components/parameters/TaskId'
++      responses:
++        '204':
++          description: Task deleted
++        '404':
++          description: Task not found
++          content:
++            application/json:
++              schema:
++                $ref: '#/components/schemas/ErrorResponse'
++  /tasks/{taskId}/complete:
++    post:
++      tags: [Tasks]
++      summary: Mark a task as completed
++      parameters:
++        - $ref: '#/components/parameters/TaskId'
++      responses:
++        '200':
++          description: Task marked completed
++          content:
++            application/json:
++              schema:
++                $ref: '#/components/schemas/TaskResponse'
++        '409':
++          description: Task already completed or deleted
++          content:
++            application/json:
++              schema:
++                $ref: '#/components/schemas/ErrorResponse'
++  /tasks/{taskId}/undo:
++    post:
++      tags: [Tasks]
++      summary: Undo task completion
++      parameters:
++        - $ref: '#/components/parameters/TaskId'
++      responses:
++        '200':
++          description: Task restored to active
++          content:
++            application/json:
++              schema:
++                $ref: '#/components/schemas/TaskResponse'
++        '409':
++          description: Undo window elapsed
++          content:
++            application/json:
++              schema:
++                $ref: '#/components/schemas/ErrorResponse'
++  /tasks/{taskId}/reminder:
++    patch:
++      tags: [Reminders]
++      summary: Create or update a reminder for a task
++      parameters:
++        - $ref: '#/components/parameters/TaskId'
++      requestBody:
++        required: true
++        content:
++          application/json:
++            schema:
++              $ref: '#/components/schemas/UpsertReminderRequest'
++      responses:
++        '200':
++          description: Reminder upserted
++          content:
++            application/json:
++              schema:
++                $ref: '#/components/schemas/ReminderResponse'
++        '422':
++          description: Invalid reminder schedule
++          content:
++            application/json:
++              schema:
++                $ref: '#/components/schemas/ErrorResponse'
++    delete:
++      tags: [Reminders]
++      summary: Cancel an existing reminder
++      parameters:
++        - $ref: '#/components/parameters/TaskId'
++      responses:
++        '204':
++          description: Reminder cancelled
++        '404':
++          description: Reminder not found
++          content:
++            application/json:
++              schema:
++                $ref: '#/components/schemas/ErrorResponse'
++  /reminders/upcoming:
++    get:
++      tags: [Reminders]
++      summary: List upcoming reminders for the next 48 hours
++      responses:
++        '200':
++          description: Upcoming reminders
++          content:
++            application/json:
++              schema:
++                type: object
++                properties:
++                  data:
++                    type: array
++                    items:
++                      $ref: '#/components/schemas/ReminderResponse'
++  /reminders/{reminderId}/snooze:
++    post:
++      tags: [Reminders]
++      summary: Snooze a reminder
++      parameters:
++        - $ref: '#/components/parameters/ReminderId'
++      requestBody:
++        required: true
++        content:
++          application/json:
++            schema:
++              $ref: '#/components/schemas/SnoozeReminderRequest'
++      responses:
++        '200':
++          description: Reminder snoozed
++          content:
++            application/json:
++              schema:
++                $ref: '#/components/schemas/ReminderResponse'
++        '409':
++          description: Reminder not in scheduled state
++          content:
++            application/json:
++              schema:
++                $ref: '#/components/schemas/ErrorResponse'
++  /reminders/{reminderId}/dismiss:
++    post:
++      tags: [Reminders]
++      summary: Dismiss a reminder
++      parameters:
++        - $ref: '#/components/parameters/ReminderId'
++      responses:
++        '200':
++          description: Reminder dismissed
++          content:
++            application/json:
++              schema:
++                $ref: '#/components/schemas/ReminderResponse'
++        '404':
++          description: Reminder not found
++          content:
++            application/json:
++              schema:
++                $ref: '#/components/schemas/ErrorResponse'
++  /reminders/activity:
++    get:
++      tags: [Activity]
++      summary: Retrieve reminder activity log (paginated)
++      parameters:
++        - in: query
++          name: reminderId
++          schema:
++            type: string
++            format: uuid
++          description: Filter by reminder ID
++        - in: query
++          name: limit
++          schema:
++            type: integer
++            default: 20
++            minimum: 1
++            maximum: 100
++        - in: query
++          name: cursor
++          schema:
++            type: string
++          description: Opaque cursor for pagination
++      responses:
++        '200':
++          description: Activity entries
++          content:
++            application/json:
++              schema:
++                type: object
++                properties:
++                  data:
++                    type: array
++                    items:
++                      $ref: '#/components/schemas/ReminderActivityResponse'
++                  nextCursor:
++                    type: string
++                    nullable: true
++
++components:
++  parameters:
++    TaskId:
++      name: taskId
++      in: path
++      required: true
++      schema:
++        type: string
++        format: uuid
++    ReminderId:
++      name: reminderId
++      in: path
++      required: true
++      schema:
++        type: string
++        format: uuid
++
++  schemas:
++    TaskResponse:
++      type: object
++      required:
++        - id
++        - title
++        - status
++        - priority
++        - createdAt
++        - updatedAt
++      properties:
++        id:
++          type: string
++          format: uuid
++        title:
++          type: string
++        notes:
++          type: string
++          nullable: true
++          maxLength: 2000
++        dueAt:
++          type: string
++          format: date-time
++          nullable: true
++        priority:
++          type: string
++          enum: [low, normal, high]
++        status:
++          type: string
++          enum: [active, completed, deleted]
++        createdAt:
++          type: string
++          format: date-time
++        updatedAt:
++          type: string
++          format: date-time
++        completedAt:
++          type: string
++          format: date-time
++          nullable: true
++        reminder:
++          $ref: '#/components/schemas/ReminderResponse'
++          nullable: true
++    CreateTaskRequest:
++      type: object
++      required:
++        - title
++      properties:
++        title:
++          type: string
++          minLength: 1
++          maxLength: 120
++        notes:
++          type: string
++          maxLength: 2000
++        dueAt:
++          type: string
++          format: date-time
++          nullable: true
++        priority:
++          type: string
++          enum: [low, normal, high]
++          default: normal
++        reminder:
++          $ref: '#/components/schemas/ReminderInput'
++          nullable: true
++    UpdateTaskRequest:
++      type: object
++      properties:
++        title:
++          type: string
++          minLength: 1
++          maxLength: 120
++        notes:
++          type: string
++          maxLength: 2000
++        dueAt:
++          type: string
++          format: date-time
++          nullable: true
++        priority:
++          type: string
++          enum: [low, normal, high]
++        status:
++          type: string
++          enum: [active, completed, deleted]
++          description: Primarily used for administrative actions; user-facing flows should call dedicated endpoints.
++    ReminderInput:
++      type: object
++      required:
++        - scheduledFor
++      properties:
++        scheduledFor:
++          type: string
++          format: date-time
++        channel:
++          type: string
++          enum: [in_app]
++          default: in_app
++    ReminderResponse:
++      type: object
++      required:
++        - id
++        - taskId
++        - scheduledFor
++        - status
++      properties:
++        id:
++          type: string
++          format: uuid
++        taskId:
++          type: string
++          format: uuid
++        scheduledFor:
++          type: string
++          format: date-time
++        status:
++          type: string
++          enum: [scheduled, sent, cancelled, snoozed]
++        snoozeUntil:
++          type: string
++          format: date-time
++          nullable: true
++        channel:
++          type: string
++          enum: [in_app]
++          default: in_app
++    UpsertReminderRequest:
++      allOf:
++        - $ref: '#/components/schemas/ReminderInput'
++      properties:
++        snoozeUntil:
++          type: string
++          format: date-time
++          nullable: true
++    SnoozeReminderRequest:
++      type: object
++      required:
++        - snoozeUntil
++      properties:
++        snoozeUntil:
++          type: string
++          format: date-time
++    ReminderActivityResponse:
++      type: object
++      required:
++        - id
++        - reminderId
++        - eventType
++        - eventTime
++      properties:
++        id:
++          type: string
++          format: uuid
++        reminderId:
++          type: string
++          format: uuid
++        eventType:
++          type: string
++          enum: [delivered, dismissed, snoozed, error]
++        eventTime:
++          type: string
++          format: date-time
++        metadata:
++          type: object
++          additionalProperties: true
++          nullable: true
++    ErrorResponse:
++      type: object
++      required:
++        - error
++        - message
++      properties:
++        error:
++          type: string
++        message:
++          type: string
++
++x-notes:
++  websocket:
++    description: |
++      Real-time reminder updates are delivered via WebSocket at `ws://{host}/ws/reminders`.
++      Messages follow `{ "event": "reminder_due", "data": ReminderResponse }`.
+*** End Patch
+[2m2025-10-17T20:49:05.749640Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: specs/001-specify-scripts-bash/quickstart.md
++# Quickstart: Modern Todo Reminders
++
++## Prerequisites
++- Node.js 20.x with npm
++- Python 3.12
++- Docker & Docker Compose (v2)
++- Make (optional convenience)
++
++## 1. Clone & Install
++```bash
++git clone <repo-url>
++cd todoapp
++
++# Frontend
++cd frontend
++npm install
++
++# Backend
++cd ../backend
++python -m venv .venv
++source .venv/bin/activate
++pip install -r requirements.txt
++```
++
++## 2. Environment Setup
++Create `.env` files from provided examples:
++- `frontend/.env.local` → configure API base URL (`VITE_API_BASE_URL=http://localhost:8000/v1`)
++- `backend/.env` → set `DATABASE_URL=sqlite:///./data/todo.db`, `REMINDER_POLL_INTERVAL=30`
++
++## 3. Run Development Servers
++```bash
++# In backend/
++uvicorn src.main:app --reload --port 8000
++
++# In frontend/
++npm run dev -- --port 5173
++```
++Access the app at http://localhost:5173.
++
++## 4. Docker Workflow
++```bash
++docker compose up --build
++```
++Services:
++- `frontend` (Vite dev server or Nginx for production build)
++- `backend` (FastAPI + SQLite volume)
++
++Stop with `docker compose down`.
++
++## 5. Testing (Test-First Enforcement)
++- Frontend: `npm run test` (Vitest), `npm run test:e2e` (Playwright)
++- Backend: `pytest --cov=src`
++- Lint/typecheck: `npm run lint`, `npm run typecheck`, `ruff check`, `mypy`
++
++All tests must be written and run before implementation per constitution; CI enforces coverage ≥90% on changed files.
++
++## 6. Storybook & Accessibility
++```bash
++cd frontend
++npm run storybook   # Component review
++npm run test:a11y   # Pa11y/axe audits
++```
++
++## 7. Database Migrations
++```bash
++cd backend
++alembic upgrade head    # apply migrations
++alembic revision --autogenerate -m "describe change"  # create new migration
++```
++
++## 8. API Contracts
++Regenerate typed clients after contract updates:
++```bash
++pnpm openapi --input ../specs/001-specify-scripts-bash/contracts/openapi.yaml \
++             --output frontend/src/services/api
++```
++(Adjust command based on selected codegen tool.)
++
++## 9. Performance & Accessibility Checks
++- Run Lighthouse CI script (`npm run audit`) before merging.
++- Execute Locust smoke tests (`locust -f locustfile.py --headless -u 50 -r 5`) to confirm reminder endpoints meet 200 ms p95.
++
++## 10. Feature Flags & Releases
++- Feature toggles defined in `backend/src/config/flags.py` and consumed in frontend via `/config` endpoint.
++- Each user story should be deployable independently; verify toggles before release.
+*** End Patch
+[2m2025-10-17T20:49:16.216696Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc",".specify/scripts/bash/update-agent-context.sh codex"],"workdir":"/home/yiy/workspace/playground/todoapp","timeout_ms":120000}
+[2m2025-10-17T20:49:24.454471Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/001-specify-scripts-bash/plan.md
+@@
+ |-----------|------------|-------------------------------------|
+ | — | — | — |
++
++## Constitution Check (Post-Design Review)
++
++- **Consistent, Accessible Experience**: UX flows reference shared Tailwind tokens and accessibility audits (Vitest axe + Playwright). Storybook captures responsive states for each component.  
++- **Component-Driven Web Architecture**: Design finalized with typed API client generation and WebSocket service abstractions; ensures frontend/backend contract alignment.  
++- **Test-First Delivery**: Test suites enumerated per story (frontend component, backend contract, Playwright e2e). Coverage targets and CI gates documented in quickstart.  
++- **Production-Grade Code Craftsmanship**: Documented ADR requirements for reminder scheduling & Docker; lint/format tools chosen with minimal configuration; peer review checklist to be enforced.  
++- **Incremental Value Delivery**: Feature flags defined in config to enable per-story rollout; data model supports independent slices without cross-story dependencies.  
++- **Performance-Focused Experience**: Performance budgets captured in quickstart; load testing via Locust and Lighthouse CI integrated into automation plan.  
++- **Sustainable Quality Automation**: CI pipeline scope defined (lint, type-check, unit, integration, coverage, Lighthouse, pa11y, dependency audits); telemetry instrumentation captured in requirements.
+*** End Patch
+[2m2025-10-17T20:49:29.576729Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","git status -sb"],"workdir":"/home/yiy/workspace/playground/todoapp"}
+[2m2025-10-17T20:49:35.261633Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat AGENTS.md"],"workdir":"/home/yiy/workspace/playground/todoapp"}
+[2m2025-10-17T21:19:01.215770Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc",".specify/scripts/bash/check-prerequisites.sh --json"],"workdir":"/home/yiy/workspace/playground/todoapp","timeout_ms":120000}
+[2m2025-10-17T21:19:08.231624Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat /home/yiy/workspace/playground/todoapp/specs/001-specify-scripts-bash/plan.md"],"workdir":"/home/yiy/workspace/playground/todoapp"}
+[2m2025-10-17T21:19:45.983854Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat .specify/templates/tasks-template.md"],"workdir":"/home/yiy/workspace/playground/todoapp"}
+[2m2025-10-17T21:21:19.699935Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: specs/001-specify-scripts-bash/tasks.md
++---
++description: "Task list for Modern Todo Reminders implementation"
++---
++
++# Tasks: Modern Todo Reminders
++
++**Input**: Design documents from `/specs/001-specify-scripts-bash/`  
++**Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
++
++**Tests**: Tests are MANDATORY per the constitution. Write and commit them FIRST; ensure they fail before any implementation task starts.
++
++**Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
++
++## Format: `[ID] [P?] [Story] Description`
++- **[P]**: Can run in parallel (different files, no dependencies)
++- **[Story]**: Which user story this task belongs to (e.g., US1, US2, US3)
++- Include exact file paths in descriptions
++
++## Phase 1: Setup (Shared Infrastructure)
++
++**Purpose**: Project initialization and basic structure
++
++- [ ] T001 Create project structure directories in `frontend/`, `backend/`, and `contracts/openapi/`
++- [ ] T002 Scaffold Vite + React + TypeScript app in `frontend/package.json` and baseline source files
++- [ ] T003 Configure Tailwind CSS setup in `frontend/tailwind.config.ts` and `frontend/postcss.config.cjs`
++- [ ] T004 Add ESLint + Prettier configs in `frontend/.eslintrc.cjs` and `frontend/.prettierrc`
++- [ ] T005 Install Storybook with minimal setup in `frontend/.storybook/main.ts`
++- [ ] T006 Initialize FastAPI application entrypoint in `backend/src/main.py`
++- [ ] T007 Define backend dependencies in `backend/requirements.txt` and lock file
++- [ ] T008 Add backend environment template and settings module in `backend/.env.example` and `backend/src/config/settings.py`
++- [ ] T009 Author Dockerfiles for frontend and backend plus `docker-compose.yml` at repo root
++- [ ] T010 Configure repository pre-commit hooks in `.pre-commit-config.yaml` covering lint, type-check, accessibility snapshots
++
++---
++
++## Phase 2: Foundational (Blocking Prerequisites)
++
++**Purpose**: Core infrastructure that MUST be complete before ANY user story can be implemented
++
++**⚠️ CRITICAL**: No user story work can begin until this phase is complete
++
++- [ ] T011 Create shared Tailwind design tokens in `frontend/src/styles/tokens.ts`
++- [ ] T012 [P] Set up accessibility testing harness in `frontend/tests/setup/a11y.ts`
++- [ ] T013 Configure Vitest and Playwright baselines in `frontend/vitest.config.ts` and `frontend/playwright.config.ts`
++- [ ] T014 [P] Add API client generation scaffold in `frontend/src/services/api/client.ts`
++- [ ] T015 Implement database session and Base metadata in `backend/src/util/db.py`
++- [ ] T016 Configure Alembic environment and base migration in `backend/alembic/env.py` and `backend/alembic/versions/0001_initial.py`
++- [ ] T017 Scaffold FastAPI routing package in `backend/src/api/__init__.py` and `backend/src/api/routes/__init__.py`
++- [ ] T018 Implement reminder scheduler skeleton in `backend/src/services/reminder_scheduler.py`
++- [ ] T019 Create WebSocket connection manager in `backend/src/api/routes/ws.py`
++- [ ] T020 Add telemetry instrumentation utilities in `backend/src/util/telemetry.py`
++- [ ] T021 Define feature flag configuration in `backend/src/config/flags.py` and `frontend/src/services/config.ts`
++- [ ] T022 Configure CI pipeline for lint/test/a11y/perf in `.github/workflows/ci.yml`
++
++**Checkpoint**: Foundation ready - user story implementation can now begin in parallel
++
++---
++
++## Phase 3: User Story 1 - Capture Tasks with Reminders (Priority: P1) 🎯 MVP
++
++**Goal**: Allow users to create tasks with optional reminders and view them immediately in the active list with notifications scheduled.
++
++**Independent Test**: Using Playwright, create a task with a reminder and confirm it appears in the active list with reminder metadata and triggers a simulated in-app notification.
++
++### Tests for User Story 1 (WRITE FIRST) ✅
++
++- [ ] T023 [P] [US1] Write Vitest component tests for task creation form in `frontend/tests/components/TaskForm.test.tsx`
++- [ ] T024 [P] [US1] Write Playwright end-to-end spec for task creation with reminder in `frontend/tests/e2e/task-create-reminder.spec.ts`
++- [ ] T025 [P] [US1] Write FastAPI contract tests for `POST /tasks` and reminder scheduling in `backend/tests/contract/test_create_task.py`
++- [ ] T026 [US1] Enforce coverage thresholds and failing checks for new code in `frontend/package.json` and `backend/pyproject.toml`
++
++### Implementation for User Story 1
++
++- [ ] T027 [US1] Implement `Task` model with fields per spec in `backend/src/models/task.py`
++- [ ] T028 [US1] Implement `Reminder` model with scheduling constraints in `backend/src/models/reminder.py`
++- [ ] T029 [US1] Create Alembic migration for tasks and reminders in `backend/alembic/versions/0002_create_tasks_and_reminders.py`
++- [ ] T030 [P] [US1] Implement Pydantic request/response schemas in `backend/src/api/schemas/task.py`
++- [ ] T031 [US1] Implement task service create logic with reminder orchestration in `backend/src/services/task_service.py`
++- [ ] T032 [US1] Add `POST /tasks` endpoint and validation in `backend/src/api/routes/tasks.py`
++- [ ] T033 [US1] Integrate reminder scheduler enqueue logic in `backend/src/services/reminder_scheduler.py`
++- [ ] T034 [P] [US1] Generate typed API client methods in `frontend/src/services/api/tasksClient.ts`
++- [ ] T035 [P] [US1] Build TaskForm component using design tokens in `frontend/src/components/TaskForm.tsx`
++- [ ] T036 [US1] Implement tasks dashboard list with optimistic updates in `frontend/src/pages/Dashboard.tsx`
++- [ ] T037 [US1] Create tasks state hook with WebSocket subscription in `frontend/src/hooks/useTasks.ts`
++- [ ] T038 [P] [US1] Implement reminder toast/notification UI in `frontend/src/components/ReminderToast.tsx`
++- [ ] T039 [US1] Document Storybook stories and visual tests in `frontend/src/components/TaskForm.stories.tsx`
++- [ ] T040 [US1] Record reminder scheduling ADR in `docs/adrs/001-reminder-scheduling.md`
++
++**Checkpoint**: User Story 1 delivers MVP slice (task creation + reminders) ready for demo behind feature flag.
++
++---
++
++## Phase 4: User Story 2 - Complete and Organize Tasks (Priority: P2)
++
++**Goal**: Enable users to complete, undo, or delete tasks while keeping reminders and history consistent.
++
++**Independent Test**: Using Playwright, toggle a task as completed, undo within 30 seconds, and delete another task ensuring reminders are cancelled and UI sections update.
++
++### Tests for User Story 2 (WRITE FIRST) ✅
++
++- [ ] T041 [P] [US2] Write Vitest component tests for TaskCard completion states in `frontend/tests/components/TaskCard.test.tsx`
++- [ ] T042 [P] [US2] Write Playwright spec for completion, undo, and delete flows in `frontend/tests/e2e/task-complete.spec.ts`
++- [ ] T043 [P] [US2] Write backend integration tests for completion and deletion endpoints in `backend/tests/integration/test_complete_task.py`
++
++### Implementation for User Story 2
++
++- [ ] T044 [US2] Extend task service with completion, undo, and delete logic in `backend/src/services/task_service.py`
++- [ ] T045 [US2] Add `/tasks/{id}/complete` and `/tasks/{id}/undo` endpoints in `backend/src/api/routes/tasks.py`
++- [ ] T046 [US2] Implement guarded delete endpoint with reminder confirmation in `backend/src/api/routes/tasks.py`
++- [ ] T047 [P] [US2] Update API client with completion and delete methods in `frontend/src/services/api/tasksClient.ts`
++- [ ] T048 [P] [US2] Update TaskCard component with new states and animations in `frontend/src/components/TaskCard.tsx`
++- [ ] T049 [US2] Render completed tasks section with timestamps in `frontend/src/pages/Dashboard.tsx`
++- [ ] T050 [US2] Instrument analytics events for completion and deletion in `frontend/src/services/analytics.ts`
++- [ ] T051 [US2] Refresh TaskCard Storybook stories and visual regression in `frontend/src/components/TaskCard.stories.tsx`
++- [ ] T052 [US2] Cancel or reschedule reminders on completion/deletion in `backend/src/services/reminder_scheduler.py`
++- [ ] T053 [US2] Capture task lifecycle ADR updates in `docs/adrs/002-task-completion.md`
++
++**Checkpoint**: User Story 2 enables independent management of task lifecycle with analytics instrumentation.
++
++---
++
++## Phase 5: User Story 3 - Review Upcoming Reminders (Priority: P3)
++
++**Goal**: Provide a reminders panel showing upcoming alerts with snooze and dismiss actions, syncing in real time.
++
++**Independent Test**: Using Playwright, verify reminders panel lists upcoming reminders chronologically, supports snooze/dismiss, and reflects updates instantly.
++
++### Tests for User Story 3 (WRITE FIRST) ✅
++
++- [ ] T054 [P] [US3] Write Vitest tests for RemindersPanel component sorting and accessibility in `frontend/tests/components/RemindersPanel.test.tsx`
++- [ ] T055 [P] [US3] Write Playwright spec for reminders panel interactions in `frontend/tests/e2e/reminders-panel.spec.ts`
++- [ ] T056 [P] [US3] Write backend integration tests for upcoming reminders and snooze/dismiss endpoints in `backend/tests/integration/test_upcoming_reminders.py`
++
++### Implementation for User Story 3
++
++- [ ] T057 [US3] Implement reminder query services for upcoming view in `backend/src/services/reminder_service.py`
++- [ ] T058 [US3] Add `GET /reminders/upcoming` endpoint in `backend/src/api/routes/reminders.py`
++- [ ] T059 [US3] Add snooze and dismiss endpoints in `backend/src/api/routes/reminders.py`
++- [ ] T060 [US3] Broadcast reminder updates over WebSocket channel in `backend/src/services/reminder_scheduler.py`
++- [ ] T061 [P] [US3] Build RemindersPanel UI with virtualization in `frontend/src/components/RemindersPanel.tsx`
++- [ ] T062 [US3] Integrate reminders panel into dashboard layout in `frontend/src/pages/Dashboard.tsx`
++- [ ] T063 [P] [US3] Implement reminder row actions and state hook in `frontend/src/components/ReminderRow.tsx`
++- [ ] T064 [US3] Extend analytics tracking for panel engagements in `frontend/src/services/analytics.ts`
++- [ ] T065 [US3] Add RemindersPanel Storybook stories and visual checks in `frontend/src/components/RemindersPanel.stories.tsx`
++- [ ] T066 [US3] Log performance findings for reminder workload in `docs/performance/reminders.md`
++
++**Checkpoint**: User Story 3 delivers full reminders overview with actionable controls and telemetry.
++
++---
++
++## Phase 6: Polish & Cross-Cutting Concerns
++
++**Purpose**: Improvements that affect multiple user stories
++
++- [ ] T067 [P] Update onboarding instructions in `specs/001-specify-scripts-bash/quickstart.md` with final commands and flags
++- [ ] T068 Run Lighthouse CI and archive report in `frontend/reports/lighthouse.md`
++- [ ] T069 Execute Locust smoke tests and record metrics in `backend/tests/perf/results.md`
++- [ ] T070 [P] Harden Docker Compose for production profiles in `docker-compose.yml`
++- [ ] T071 Perform security audit and document findings in `docs/security/audit.md`
++- [ ] T072 Assemble release notes with screenshots in `docs/release-notes.md`
++
++---
++
++## Dependencies & Execution Order
++
++### Phase Dependencies
++
++- **Setup (Phase 1)** → foundational tasks
++- **Foundational (Phase 2)** → unlocks User Stories 1–3
++- **User Story 1 (P1)** → MVP; required before US2 and US3 to ensure shared models/services exist
++- **User Story 2 (P2)** → depends on US1 entities but can proceed once its tests are authored
++- **User Story 3 (P3)** → depends on US1 reminder infrastructure; can start after foundational + US1 tests created
++- **Polish Phase** → runs after desired user stories are complete
++
++### User Story Dependencies
++
++- US1: No story dependencies
++- US2: Depends on US1 data structures and reminder cancellation hooks
++- US3: Depends on US1 reminder scheduling and WebSocket infrastructure
++
++### Within Each User Story
++
++- Tests MUST be written and FAIL before implementation
++- Models before services
++- Services before endpoints
++- UI wiring after API readiness
++- Story complete before moving to next priority
++
++### Parallel Opportunities
++
++- Parallelize tasks marked `[P]` such as component tests, API client updates, and UI builds
++- Tests within a story can run concurrently once scoped
++- Different developers can own separate user stories after foundational completion (subject to dependencies above)
++
++## Parallel Example: User Story 1
++
++```bash
++# Run in parallel after writing tests:
++Task: "T023 [P] [US1] Write Vitest component tests for task creation form in frontend/tests/components/TaskForm.test.tsx"
++Task: "T024 [P] [US1] Write Playwright end-to-end spec for task creation with reminder in frontend/tests/e2e/task-create-reminder.spec.ts"
++Task: "T025 [P] [US1] Write FastAPI contract tests for POST /tasks and reminder scheduling in backend/tests/contract/test_create_task.py"
++
++# Parallel implementation once tests exist:
++Task: "T034 [P] [US1] Generate typed API client methods in frontend/src/services/api/tasksClient.ts"
++Task: "T035 [P] [US1] Build TaskForm component using design tokens in frontend/src/components/TaskForm.tsx"
++Task: "T038 [P] [US1] Implement reminder toast/notification UI in frontend/src/components/ReminderToast.tsx"
++```
++
++---
++
++## Implementation Strategy
++
++### MVP First (User Story 1 Only)
++
++1. Complete Phase 1: Setup  
++2. Complete Phase 2: Foundational (blocking)  
++3. Author and run User Story 1 tests (T023–T025) to confirm they fail  
++4. Implement US1 (T027–T040) until tests pass and Lighthouse targets met  
++5. Validate accessibility + reminder delivery, demo MVP slice
++
++### Incremental Delivery
++
++1. Deliver US1 as MVP behind feature flag  
++2. Enable US2 to add task lifecycle management; release after independent validation  
++3. Layer US3 reminders panel and release when telemetry + performance goals met  
++4. Finish with Polish phase to finalize docs, performance, and deployment hardening
++
++### Parallel Team Strategy
++
++1. Shared team executes Setup + Foundational tasks  
++2. Assign US1 to Developer A, US2 to Developer B, US3 to Developer C (tests first)  
++3. Coordinate via feature flags and shared contracts; merge once each slice passes tests and audits
++
++---
++
++## Notes
++
++- [P] tasks = different files, no dependencies  
++- [Story] label maps task to specific user story for traceability  
++- Ensure screenshots or GIFs accompany PRs per governance  
++- Attach ADR updates, coverage reports, and performance journals to relevant PRs  
++- Keep dependency footprint minimal; evaluate new packages against constitution before adding
+*** End Patch
+[2m2025-10-17T21:22:38.883088Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc",".specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks"],"workdir":"/home/yiy/workspace/playground/todoapp","timeout_ms":120000}
+[2m2025-10-17T21:22:44.006181Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg -n \"^###\" -n \"^##\" spec.md"],"workdir":"/home/yiy/workspace/playground/todoapp/specs/001-specify-scripts-bash"}
+[2m2025-10-17T21:22:46.948542Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '25,210p' spec.md"],"workdir":"/home/yiy/workspace/playground/todoapp/specs/001-specify-scripts-bash"}
+[2m2025-10-17T21:22:53.761226Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg \"analytics\" -n specs/001-specify-scripts-bash/tasks.md"]}
+[2m2025-10-17T21:23:20.704745Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg \"ReminderActivity\" specs/001-specify-scripts-bash/tasks.md"]}
+[2m2025-10-17T21:23:42.322735Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg \"reminders/activity\" -n specs/001-specify-scripts-bash/tasks.md"]}
+[2m2025-10-17T21:25:28.860715Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"pending","step":"Update spec and supporting docs to clarify duplicate prevention and offline queue behavior plus ensure ReminderActivity scope is defined"},{"status":"pending","step":"Revise plan/data-model/contracts to align with updated requirements for ReminderActivity logging and reminder activity endpoint"},{"status":"pending","step":"Augment tasks.md to cover missing tasks for reminder activity logging, analytics instrumentation, duplicate title handling, and offline queueing"},{"status":"pending","step":"Validate consistency and summarize changes"}]}
+[2m2025-10-17T21:25:41.094625Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/001-specify-scripts-bash/spec.md
+@@
+ 3. **Given** the user has set a reminder, **When** the scheduled time arrives, **Then** the system delivers an in-app notification and updates the task badge to indicate an alert has been sent.
++4. **Given** the user submits a task title that matches another task created within the last 5 minutes, **When** they attempt to save, **Then** the system prompts for confirmation before creating the duplicate.
++5. **Given** the user is offline, **When** they create a task with a reminder, **Then** the task saves locally, shows a “Sync pending” status chip, and syncs automatically when connectivity resumes.
+@@
+ - Apply primary button, spacing, and typography tokens from the design system; maintain consistent focus outlines.
+ - Ensure form is fully operable via keyboard and announces validation errors through screen readers.
+ - Provide responsive layout for mobile, tablet, and desktop breakpoints with identical affordances.
++- Display offline “Sync pending” chip using semantic status tokens and ensure screen readers announce the pending state.
+ 
+ **Performance Targets**:
+ - Form interactions must respond within 100 ms; saving a task must reflect in the list within 500 ms.
+ - Lighthouse performance score for the dashboard must remain ≥ 90 after task creation.
++- Offline queue must sync within 5 seconds of connectivity restoration for up to 20 pending tasks.
+@@
+ - Requires ADR update for reminder scheduling logic and persistence shape.
+ - Reuse shared form and notification utilities to avoid duplication; add stricter typings for reminder payloads.
++- Introduce shared offline queue utility with deterministic tests covering enqueue/dequeue, persistence, and retry behavior.
+@@
+ ### Edge Cases
+@@
+-- Duplicate task titles entered within a short period should trigger a confirmation to prevent accidental repeats.
++- Duplicate task titles entered within a five-minute window should trigger a confirmation modal with “Create anyway” and “Cancel” options; cancellation returns focus to the title field.
+ - Users deleting a task with a reminder due within the next minute must confirm to avoid missing critical tasks.
+-- Offline task creation should queue reminders and display a status chip until synchronization succeeds.
++- Offline task creation should queue reminders, display a “Sync pending” status chip, and automatically retry every 30 seconds until confirmation from the backend is received; failures after three attempts surface an inline error with retry option.
+*** End Patch
+[2m2025-10-17T21:26:00.836083Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/001-specify-scripts-bash/plan.md
+@@
+-Deliver a lightweight, modern todo web application that lets users capture tasks with reminders, complete or delete tasks, and review upcoming reminders. The solution must emphasize minimal dependencies: React + Tailwind on the frontend, FastAPI with SQLite on the backend, and containerized deployment with Docker while preserving accessibility, test-first development, and performance budgets defined in the constitution and feature spec.
++Deliver a lightweight, modern todo web application that lets users capture tasks with reminders (including duplicate confirmation and offline queueing), complete or delete tasks, and review upcoming reminders with auditable activity logs. The solution must emphasize minimal dependencies: React + Tailwind on the frontend, FastAPI with SQLite on the backend, and containerized deployment with Docker while preserving accessibility, test-first development, and performance budgets defined in the constitution and feature spec.
+@@
+-**Primary Dependencies**: React 18, Vite, Tailwind CSS, FastAPI, Pydantic, SQLAlchemy 2.x (minimal usage), Alembic (schema migrations)  
++**Primary Dependencies**: React 18, Vite, Tailwind CSS, FastAPI, Pydantic, SQLAlchemy 2.x (minimal usage), Alembic (schema migrations), IndexedDB (via lightweight wrapper) for offline queue persistence  
+@@
+-**Constraints**: Minimal third-party libraries beyond mandated stack; Docker-based dev/test/prod parity; WCAG 2.1 AA compliance; offline task queueing for reminders; vertical slices behind feature flags  
++**Constraints**: Minimal third-party libraries beyond mandated stack; Docker-based dev/test/prod parity; WCAG 2.1 AA compliance; offline task queueing for reminders using IndexedDB; vertical slices behind feature flags; reminder delivery activity must be logged for auditing  
+@@
+-- **Consistent, Accessible Experience**: Tailwind tokens defined centrally (`frontend/src/styles/tokens.ts`) and enforced via Storybook, Vitest a11y assertions, and Playwright AXE audits prior to merge. Responsive breakpoints (mobile/tablet/desktop) verified per acceptance scenarios.  
++- **Consistent, Accessible Experience**: Tailwind tokens defined centrally (`frontend/src/styles/tokens.ts`) and enforced via Storybook, Vitest a11y assertions, and Playwright AXE audits prior to merge. Responsive breakpoints (mobile/tablet/desktop) verified per acceptance scenarios, including offline “Sync pending” status accessibility.  
+@@
+-- **Component-Driven Web Architecture**: React + TypeScript component library with colocated stories/tests; typed API client generated from OpenAPI spec; backend exposes REST endpoints aligning with contracts.  
++- **Component-Driven Web Architecture**: React + TypeScript component library with colocated stories/tests; typed API client generated from OpenAPI spec; backend exposes REST endpoints aligning with contracts including `ReminderActivity` routes.  
+@@
+-- **Test-First Delivery**: Before implementation, create failing Vitest component tests, Playwright accessibility/performance checks, and pytest contract/integration suites. Enforce ≥90% coverage on touched files and 100% on reminder scheduling utilities; CI blocks on unmet thresholds.  
++- **Test-First Delivery**: Before implementation, create failing Vitest component tests, Playwright accessibility/offline checks, and pytest contract/integration suites (including reminder activity logging). Enforce ≥90% coverage on touched files and 100% on reminder scheduling utilities; CI blocks on unmet thresholds.  
+@@
+-- **Performance-Focused Experience**: Performance budgets tracked in `frontend/perf-budget.json`; Lighthouse CI gating; backend load testing via Locust targeting 200 ms p95; reminder polling uses event-driven notifications to prevent bundle bloat.  
++- **Performance-Focused Experience**: Performance budgets tracked in `frontend/perf-budget.json`; Lighthouse CI gating; backend load testing via Locust targeting 200 ms p95; reminder polling uses event-driven notifications to prevent bundle bloat; offline sync retries capped to protect battery/perf budgets.  
+@@
+-- **Sustainable Quality Automation**: CI pipeline runs lint, type-check, unit/component/integration tests, Lighthouse, pa11y, npm audit, pip-audit. Telemetry events for creation/completion/reminders feed into analytics dashboard reviewed monthly.
++- **Sustainable Quality Automation**: CI pipeline runs lint, type-check, unit/component/integration tests, Lighthouse, pa11y, npm audit, pip-audit. Telemetry events for creation/completion/reminders and reminder delivery activity feed into analytics dashboard reviewed monthly.
+@@
+-│   ├── services/
++│   ├── services/
+ │   ├── models/
+ │   └── util/
+ └── tests/
+@@
+-**Structure Decision**: Adopt the web application split. Frontend assets and tests reside under `frontend/`, backend FastAPI service and tests under `backend/`, and generated API contracts shared via `contracts/openapi/` folder.
++**Structure Decision**: Adopt the web application split. Frontend assets (including offline queue utilities and analytics) and tests reside under `frontend/`, backend FastAPI service (including reminder activity endpoints) and tests under `backend/`, and generated API contracts shared via `contracts/openapi/` folder.
+@@
+-- **Consistent, Accessible Experience**: UX flows reference shared Tailwind tokens and accessibility audits (Vitest axe + Playwright). Storybook captures responsive states for each component.  
+-- **Component-Driven Web Architecture**: Design finalized with typed API client generation and WebSocket service abstractions; ensures frontend/backend contract alignment.  
+-- **Test-First Delivery**: Test suites enumerated per story (frontend component, backend contract, Playwright e2e). Coverage targets and CI gates documented in quickstart.  
+-- **Production-Grade Code Craftsmanship**: Documented ADR requirements for reminder scheduling & Docker; lint/format tools chosen with minimal configuration; peer review checklist to be enforced.  
+-- **Incremental Value Delivery**: Feature flags defined in config to enable per-story rollout; data model supports independent slices without cross-story dependencies.  
+-- **Performance-Focused Experience**: Performance budgets captured in quickstart; load testing via Locust and Lighthouse CI integrated into automation plan.  
+-- **Sustainable Quality Automation**: CI pipeline scope defined (lint, type-check, unit, integration, coverage, Lighthouse, pa11y, dependency audits); telemetry instrumentation captured in requirements.
++- **Consistent, Accessible Experience**: UX flows reference shared Tailwind tokens and accessibility audits (Vitest axe + Playwright). Storybook captures responsive states, including offline sync indicators and duplicate confirmation modal.  
++- **Component-Driven Web Architecture**: Design finalized with typed API client generation, offline queue modules, and WebSocket service abstractions; ensures frontend/backend contract alignment across reminder activity endpoints.  
++- **Test-First Delivery**: Test suites enumerated per story (frontend component, backend contract, Playwright e2e) cover duplicate confirmation, offline queueing, and reminder activity logging. Coverage targets and CI gates documented in quickstart.  
++- **Production-Grade Code Craftsmanship**: Documented ADR requirements for reminder scheduling, offline queue design, and Docker; lint/format tools chosen with minimal configuration; peer review checklist to be enforced.  
++- **Incremental Value Delivery**: Feature flags defined in config to enable per-story rollout; data model supports independent slices without cross-story dependencies, including reminder activity logging.  
++- **Performance-Focused Experience**: Performance budgets captured in quickstart; load testing via Locust and Lighthouse CI integrated into automation plan; offline sync retry intervals documented.  
++- **Sustainable Quality Automation**: CI pipeline scope defined (lint, type-check, unit, integration, coverage, Lighthouse, pa11y, dependency audits); telemetry instrumentation captured in requirements, including ReminderActivity persistence and analytics events.
+*** End Patch
+[2m2025-10-17T21:26:12.242417Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/001-specify-scripts-bash/data-model.md
+@@
+ ### ReminderActivity
+ - **Primary Key**: `id` (UUID TEXT)
+ - **Fields**:
+   - `reminder_id` (FK → Reminder.id, indexed)
+   - `event_type` (ENUM: `delivered`, `dismissed`, `snoozed`, `error`)
+   - `event_time` (TIMESTAMP WITH TIMEZONE)
+   - `metadata` (JSONB-like TEXT storing key-value pairs, optional)
++- **Indexes**: `(reminder_id, event_time)` composite index for chronological queries
+ - **Relationships**:
+   - Many-to-one to `Reminder`
+ - **Validation**:
+   - `event_time` auto-populated at insert.
+   - `metadata` validated against JSON schema ensuring keys (`channel`, `error_code`, etc.) if present.
++- **Usage**:
++  - Delivery scheduler logs `delivered` or `error` events.
++  - User interactions (dismiss, snooze) append entries for audit and engagement analytics.
+ 
+ ### UserPreference (Read-only reference)
+@@
++- **OfflineTaskQueueEntry (Frontend Local Storage)**
++  - Stored via IndexedDB under `todo-offline-queue`.
++  - Fields: `clientId` (UUID), `payload` (task + reminder data), `createdAt`, `retryCount`, `lastAttemptAt`.
++  - Sync service flushes entries when connectivity restored; successful sync removes entry, failures increment retry count (max 3 then surface error).
++
+ ## Derived Views / Materialized Data
+ - **Upcoming Reminders View**: Query combining `Task`, `Reminder` for `status = scheduled` within next 48 hours, ordered by `scheduled_for`.
+ - **Completed Tasks View**: Filter `Task` with `status = completed`, sorted by `completed_at` desc for history tab.
++- **Reminder Activity Feed**: Join `ReminderActivity` with `Task` to expose latest user-visible events in reminders panel.
+*** End Patch
+[2m2025-10-17T21:27:08.961371Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Delete File: specs/001-specify-scripts-bash/tasks.md
+*** End Patch
+[2m2025-10-17T21:27:45.231362Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: specs/001-specify-scripts-bash/tasks.md
++---
++description: "Task list for Modern Todo Reminders implementation"
++---
++
++# Tasks: Modern Todo Reminders
++
++**Input**: Design documents from `/specs/001-specify-scripts-bash/`  
++**Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
++
++**Tests**: Tests are MANDATORY per the constitution. Write and commit them FIRST; ensure they fail before any implementation task starts.
++
++**Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
++
++## Phase 1: Setup (Shared Infrastructure)
++
++**Purpose**: Project initialization and basic structure
++
++- [ ] T001 Create project structure directories in `frontend/`, `backend/`, and `contracts/openapi/`
++- [ ] T002 Scaffold Vite + React + TypeScript app in `frontend/package.json` and baseline source files
++- [ ] T003 Configure Tailwind CSS setup in `frontend/tailwind.config.ts` and `frontend/postcss.config.cjs`
++- [ ] T004 Add ESLint + Prettier configs in `frontend/.eslintrc.cjs` and `frontend/.prettierrc`
++- [ ] T005 Install Storybook with minimal setup in `frontend/.storybook/main.ts`
++- [ ] T006 Initialize FastAPI application entrypoint in `backend/src/main.py`
++- [ ] T007 Define backend dependencies in `backend/requirements.txt` and lock file
++- [ ] T008 Add backend environment template and settings module in `backend/.env.example` and `backend/src/config/settings.py`
++- [ ] T009 Author Dockerfiles for frontend and backend plus `docker-compose.yml` at repo root
++- [ ] T010 Configure repository pre-commit hooks in `.pre-commit-config.yaml` covering lint, type-check, accessibility snapshots
++
++---
++
++## Phase 2: Foundational (Blocking Prerequisites)
++
++**Purpose**: Core infrastructure that MUST be complete before ANY user story can be implemented
++
++**⚠️ CRITICAL**: No user story work can begin until this phase is complete
++
++- [ ] T011 Create shared Tailwind design tokens in `frontend/src/styles/tokens.ts`
++- [ ] T012 [P] Set up accessibility testing harness in `frontend/tests/setup/a11y.ts`
++- [ ] T013 Configure Vitest and Playwright baselines in `frontend/vitest.config.ts` and `frontend/playwright.config.ts`
++- [ ] T014 [P] Add API client generation scaffold in `frontend/src/services/api/client.ts`
++- [ ] T015 Implement database session and Base metadata in `backend/src/util/db.py`
++- [ ] T016 Configure Alembic environment and base migration in `backend/alembic/env.py` and `backend/alembic/versions/0001_initial.py`
++- [ ] T017 Scaffold FastAPI routing package in `backend/src/api/__init__.py` and `backend/src/api/routes/__init__.py`
++- [ ] T018 Implement reminder scheduler skeleton in `backend/src/services/reminder_scheduler.py`
++- [ ] T019 Create WebSocket connection manager in `backend/src/api/routes/ws.py`
++- [ ] T020 Add telemetry instrumentation utilities in `backend/src/util/telemetry.py`
++- [ ] T021 Define feature flag configuration in `backend/src/config/flags.py` and `frontend/src/services/config.ts`
++- [ ] T022 Configure CI pipeline for lint/test/a11y/perf in `.github/workflows/ci.yml`
++- [ ] T023 [P] Build offline queue storage module using IndexedDB in `frontend/src/services/offlineQueue.ts`
++- [ ] T024 [P] Add Vitest unit tests for offline queue behavior in `frontend/tests/services/offlineQueue.test.ts`
++
++**Checkpoint**: Foundation ready - user story implementation can now begin in parallel
++
++---
++
++## Phase 3: User Story 1 - Capture Tasks with Reminders (Priority: P1) 🎯 MVP
++
++**Goal**: Allow users to create tasks with optional reminders, handle duplicates, support offline queueing, and log reminder delivery activity.
++
++**Independent Test**: Using Playwright, create a task with a reminder while online and offline, verify duplicate title confirmation, ensure the task appears in the active list with reminder metadata, and confirm ReminderActivity logging via API.
++
++### Tests for User Story 1 (WRITE FIRST) ✅
++
++- [ ] T025 [P] [US1] Write Vitest component tests for TaskForm covering validation, duplicate confirmation, and offline chip in `frontend/tests/components/TaskForm.test.tsx`
++- [ ] T026 [P] [US1] Write Playwright end-to-end spec for task creation (online/offline with reminder) in `frontend/tests/e2e/task-create-reminder.spec.ts`
++- [ ] T027 [P] [US1] Write FastAPI contract tests for `POST /tasks` and reminder scheduling in `backend/tests/contract/test_create_task.py`
++- [ ] T028 [P] [US1] Write backend unit tests for reminder scheduler logging to ReminderActivity in `backend/tests/unit/test_reminder_logging.py`
++- [ ] T029 [US1] Enforce coverage thresholds (≥90% touched files, 100% reminder utilities) in `frontend/package.json` and `backend/pyproject.toml`
++
++### Implementation for User Story 1
++
++- [ ] T030 [US1] Implement `Task` model with fields and constraints from spec in `backend/src/models/task.py`
++- [ ] T031 [US1] Implement `Reminder` model with scheduling constraints in `backend/src/models/reminder.py`
++- [ ] T032 [US1] Create Alembic migration for tasks and reminders in `backend/alembic/versions/0002_create_tasks_and_reminders.py`
++- [ ] T033 [US1] Implement `ReminderActivity` model with indexes in `backend/src/models/reminder_activity.py`
++- [ ] T034 [US1] Create Alembic migration for reminder activity table in `backend/alembic/versions/0003_create_reminder_activity.py`
++- [ ] T035 [P] [US1] Implement Pydantic schemas for tasks, reminders, and reminder activity in `backend/src/api/schemas/task.py`
++- [ ] T036 [US1] Implement duplicate title guard service in `backend/src/services/duplicate_guard.py`
++- [ ] T037 [US1] Implement task service create logic with duplicate confirmation and offline flags in `backend/src/services/task_service.py`
++- [ ] T038 [US1] Add `POST /tasks` endpoint with confirmation response handling in `backend/src/api/routes/tasks.py`
++- [ ] T039 [US1] Integrate reminder scheduler enqueue and delivery logging in `backend/src/services/reminder_scheduler.py`
++- [ ] T040 [P] [US1] Generate typed API client methods for task creation and duplicate confirmation in `frontend/src/services/api/tasksClient.ts`
++- [ ] T041 [P] [US1] Build TaskForm component using design tokens with duplicate confirmation modal in `frontend/src/components/TaskForm.tsx`
++- [ ] T042 [US1] Implement offline queue hook flushing pending tasks in `frontend/src/hooks/useOfflineQueue.ts`
++- [ ] T043 [US1] Update dashboard to display sync pending status and reminder metadata in `frontend/src/pages/Dashboard.tsx`
++- [ ] T044 [P] [US1] Implement reminder toast/notification UI in `frontend/src/components/ReminderToast.tsx`
++- [ ] T045 [US1] Update tasks state hook to merge WebSocket updates and offline queue in `frontend/src/hooks/useTasks.ts`
++- [ ] T046 [US1] Instrument analytics events for task creation and reminder scheduling in `frontend/src/services/analytics.ts`
++- [ ] T047 [US1] Document Storybook stories and visual tests for TaskForm (online/offline/duplicate) in `frontend/src/components/TaskForm.stories.tsx`
++- [ ] T048 [US1] Record ADR covering reminder scheduling, duplicate guard, and offline queue design in `docs/adrs/001-reminder-scheduling-offline.md`
++
++**Checkpoint**: User Story 1 delivers MVP slice (task creation + reminders + logging) ready for demo behind feature flag.
++
++---
++
++## Phase 4: User Story 2 - Complete and Organize Tasks (Priority: P2)
++
++**Goal**: Enable users to complete, undo, or delete tasks while keeping reminders and history consistent with analytics tracking.
++
++**Independent Test**: Using Playwright, toggle a task as completed, undo within 30 seconds, and delete another task ensuring reminders are cancelled, history updates, and analytics fire.
++
++### Tests for User Story 2 (WRITE FIRST) ✅
++
++- [ ] T049 [P] [US2] Write Vitest component tests for TaskCard completion states in `frontend/tests/components/TaskCard.test.tsx`
++- [ ] T050 [P] [US2] Write Playwright spec for completion, undo, and delete flows in `frontend/tests/e2e/task-complete.spec.ts`
++- [ ] T051 [P] [US2] Write backend integration tests for completion and deletion endpoints in `backend/tests/integration/test_complete_task.py`
++
++### Implementation for User Story 2
++
++- [ ] T052 [US2] Extend task service with completion, undo, and delete logic in `backend/src/services/task_service.py`
++- [ ] T053 [US2] Add `/tasks/{id}/complete` and `/tasks/{id}/undo` endpoints in `backend/src/api/routes/tasks.py`
++- [ ] T054 [US2] Implement guarded delete endpoint with reminder confirmation in `backend/src/api/routes/tasks.py`
++- [ ] T055 [P] [US2] Update API client with completion and delete methods in `frontend/src/services/api/tasksClient.ts`
++- [ ] T056 [P] [US2] Update TaskCard component with new states and reduced-motion animations in `frontend/src/components/TaskCard.tsx`
++- [ ] T057 [US2] Render completed tasks section with timestamps in `frontend/src/pages/Dashboard.tsx`
++- [ ] T058 [US2] Instrument analytics events for completion and deletion in `frontend/src/services/analytics.ts`
++- [ ] T059 [US2] Refresh TaskCard Storybook stories and visual regression in `frontend/src/components/TaskCard.stories.tsx`
++- [ ] T060 [US2] Cancel or reschedule reminders on completion/deletion in `backend/src/services/reminder_scheduler.py`
++- [ ] T061 [US2] Capture task lifecycle ADR updates in `docs/adrs/002-task-completion.md`
++
++**Checkpoint**: User Story 2 enables independent management of task lifecycle with analytics instrumentation.
++
++---
++
++## Phase 5: User Story 3 - Review Upcoming Reminders (Priority: P3)
++
++**Goal**: Provide a reminders panel showing upcoming alerts with snooze/dismiss actions, reminder activity feed, and real-time updates.
++
++**Independent Test**: Using Playwright, verify reminders panel lists upcoming reminders chronologically, supports snooze/dismiss, reflects updates instantly, and exposes reminder activity logs.
++
++### Tests for User Story 3 (WRITE FIRST) ✅
++
++- [ ] T062 [P] [US3] Write Vitest tests for RemindersPanel component sorting and accessibility in `frontend/tests/components/RemindersPanel.test.tsx`
++- [ ] T063 [P] [US3] Write Playwright spec for reminders panel interactions in `frontend/tests/e2e/reminders-panel.spec.ts`
++- [ ] T064 [P] [US3] Write backend integration tests for upcoming reminders, snooze/dismiss, and `GET /reminders/activity` in `backend/tests/integration/test_reminders_panel.py`
++
++### Implementation for User Story 3
++
++- [ ] T065 [US3] Implement reminder query services for upcoming view in `backend/src/services/reminder_service.py`
++- [ ] T066 [US3] Add `GET /reminders/upcoming` endpoint in `backend/src/api/routes/reminders.py`
++- [ ] T067 [US3] Add snooze and dismiss endpoints in `backend/src/api/routes/reminders.py`
++- [ ] T068 [US3] Implement `GET /reminders/activity` endpoint with pagination in `backend/src/api/routes/reminders.py`
++- [ ] T069 [US3] Broadcast reminder updates and activity events over WebSocket in `backend/src/services/reminder_scheduler.py`
++- [ ] T070 [P] [US3] Build RemindersPanel UI with virtualization in `frontend/src/components/RemindersPanel.tsx`
++- [ ] T071 [US3] Integrate reminders panel into dashboard layout in `frontend/src/pages/Dashboard.tsx`
++- [ ] T072 [P] [US3] Implement reminder row actions and state hook in `frontend/src/components/ReminderRow.tsx`
++- [ ] T073 [US3] Extend analytics tracking for panel engagement and activity views in `frontend/src/services/analytics.ts`
++- [ ] T074 [US3] Add RemindersPanel Storybook stories and visual checks in `frontend/src/components/RemindersPanel.stories.tsx`
++- [ ] T075 [US3] Log performance findings for reminder workload and activity feed in `docs/performance/reminders.md`
++
++**Checkpoint**: User Story 3 delivers full reminders overview with actionable controls, activity feed, and telemetry.
++
++---
++
++## Phase 6: Polish & Cross-Cutting Concerns
++
++**Purpose**: Improvements that affect multiple user stories
++
++- [ ] T076 [P] Update onboarding instructions in `specs/001-specify-scripts-bash/quickstart.md` with final commands and flags
++- [ ] T077 Run Lighthouse CI and archive report in `frontend/reports/lighthouse.md`
++- [ ] T078 Execute Locust smoke tests and record metrics in `backend/tests/perf/results.md`
++- [ ] T079 [P] Harden Docker Compose for production profiles in `docker-compose.yml`
++- [ ] T080 Perform security audit and document findings in `docs/security/audit.md`
++- [ ] T081 Assemble release notes with screenshots in `docs/release-notes.md`
++
++---
++
++## Dependencies & Execution Order
++
++### Phase Dependencies
++
++- **Setup (Phase 1)** → foundational tasks
++- **Foundational (Phase 2)** → unlocks User Stories 1–3
++- **User Story 1 (P1)** → MVP; required before US2 and US3 to ensure shared models/services exist
++- **User Story 2 (P2)** → depends on US1 entities but can proceed once its tests are authored
++- **User Story 3 (P3)** → depends on US1 reminder infrastructure and activity logging; can start after foundational tasks and US1 tests are created
++- **Polish Phase** → runs after desired user stories are complete
++
++### User Story Dependencies
++
++- US1: No story dependencies
++- US2: Depends on US1 data structures and reminder cancellation hooks
++- US3: Depends on US1 reminder scheduling, activity logging, and WebSocket infrastructure
++
++### Within Each User Story
++
++- Tests MUST be written and FAIL before implementation
++- Models before services
++- Services before endpoints
++- UI wiring after API readiness
++- Story complete before moving to next priority
++
++### Parallel Opportunities
++
++- Parallelize tasks marked `[P]` such as component tests, API client updates, and UI builds
++- Tests within a story can run concurrently once scoped
++- Different developers can own separate user stories after foundational completion (subject to dependencies above)
++
++## Parallel Example: User Story 1
++
++```bash
++# Run in parallel after writing tests:
++Task: "T025 [P] [US1] Write Vitest component tests for TaskForm covering validation, duplicate confirmation, and offline chip in frontend/tests/components/TaskForm.test.tsx"
++Task: "T026 [P] [US1] Write Playwright end-to-end spec for task creation (online/offline with reminder) in frontend/tests/e2e/task-create-reminder.spec.ts"
++Task: "T027 [P] [US1] Write FastAPI contract tests for POST /tasks and reminder scheduling in backend/tests/contract/test_create_task.py"
++
++# Parallel implementation once tests exist:
++Task: "T040 [P] [US1] Generate typed API client methods for task creation and duplicate confirmation in frontend/src/services/api/tasksClient.ts"
++Task: "T041 [P] [US1] Build TaskForm component using design tokens with duplicate confirmation modal in frontend/src/components/TaskForm.tsx"
++Task: "T044 [P] [US1] Implement reminder toast/notification UI in frontend/src/components/ReminderToast.tsx"
++```
++
++---
++
++## Implementation Strategy
++
++### MVP First (User Story 1 Only)
++
++1. Complete Phase 1: Setup  
++2. Complete Phase 2: Foundational (blocking)  
++3. Author and run User Story 1 tests (T025–T028) to confirm they fail  
++4. Implement US1 (T030–T048) until tests pass, ReminderActivity logs emit, and Lighthouse targets met  
++5. Validate accessibility, duplicate confirmation, offline sync, and reminder delivery; demo MVP slice
++
++### Incremental Delivery
++
++1. Deliver US1 as MVP behind feature flag  
++2. Enable US2 to add task lifecycle management; release after independent validation  
++3. Layer US3 reminders panel and activity feed; release when telemetry + performance goals met  
++4. Finish with Polish phase to finalize docs, performance, and deployment hardening
++
++### Parallel Team Strategy
++
++1. Shared team executes Setup + Foundational tasks  
++2. Assign US1 to Developer A, US2 to Developer B, US3 to Developer C (tests first)  
++3. Coordinate via feature flags and shared contracts; merge once each slice passes tests and audits
++
++---
++
++## Notes
++
++- [P] tasks = different files, no dependencies  
++- [Story] label maps task to specific user story for traceability  
++- Ensure screenshots or GIFs accompany PRs per governance  
++- Attach ADR updates, coverage reports, and performance journals to relevant PRs  
++- Keep dependency footprint minimal; evaluate new packages against constitution before adding
+*** End Patch
+[2m2025-10-17T21:27:51.399387Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '1,200p' specs/001-specify-scripts-bash/contracts/openapi.yaml"]}
+[2m2025-10-17T21:28:02.033745Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/001-specify-scripts-bash/contracts/openapi.yaml
+@@
+       responses:
+         '201':
+           description: Task created
+           content:
+             application/json:
+               schema:
+                 $ref: '#/components/schemas/TaskResponse'
++        '409':
++          description: Duplicate task detected; confirmation required
++          content:
++            application/json:
++              schema:
++                $ref: '#/components/schemas/DuplicateTaskResponse'
+         '400':
+           description: Validation error
+           content:
+             application/json:
+               schema:
+@@
+     DuplicateTaskResponse:
+       type: object
+       required:
+-        - id
+-        - title
+-        - status
+-        - priority
+-        - createdAt
+-        - updatedAt
+-      properties:
+-        id:
+-          type: string
+-          format: uuid
+-        title:
+-          type: string
+-        notes:
+-          type: string
+-          nullable: true
+-          maxLength: 2000
+-        dueAt:
+-          type: string
+-          format: date-time
+-          nullable: true
+-        priority:
+-          type: string
+-          enum: [low, normal, high]
+-        status:
+-          type: string
+-          enum: [active, completed, deleted]
+-        createdAt:
+-          type: string
+-          format: date-time
+-        updatedAt:
+-          type: string
+-          format: date-time
+-        completedAt:
+-          type: string
+-          format: date-time
+-          nullable: true
+-        reminder:
+-          $ref: '#/components/schemas/ReminderResponse'
+-          nullable: true
++        - duplicateDetected
++        - existingTask
++      properties:
++        duplicateDetected:
++          type: boolean
++        existingTask:
++          $ref: '#/components/schemas/TaskResponse'
+*** End Patch
+[2m2025-10-17T21:28:06.867603Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/001-specify-scripts-bash/contracts/openapi.yaml
+@@
+       responses:
+         '201':
+           description: Task created
+           content:
+             application/json:
+               schema:
+                 $ref: '#/components/schemas/TaskResponse'
++        '409':
++          description: Duplicate task detected; confirmation required
++          content:
++            application/json:
++              schema:
++                $ref: '#/components/schemas/DuplicateTaskResponse'
+         '400':
+           description: Validation error
+           content:
+             application/json:
+               schema:
+@@
+     ReminderActivityResponse:
+       type: object
+       required:
+         - id
+         - reminderId
+@@
+     ErrorResponse:
+       type: object
+       required:
+         - error
+         - message
+       properties:
+         error:
+           type: string
+         message:
+           type: string
++
++    DuplicateTaskResponse:
++      type: object
++      required:
++        - duplicateDetected
++        - existingTask
++      properties:
++        duplicateDetected:
++          type: boolean
++          const: true
++        existingTask:
++          $ref: '#/components/schemas/TaskResponse'
+*** End Patch
+[2m2025-10-17T21:28:11.722262Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat specs/001-specify-scripts-bash/research.md"]}
+[2m2025-10-17T21:28:22.118795Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/001-specify-scripts-bash/research.md
+@@
+ ## Testing & Automation Strategy
+ - **Decision**: Adopt Vitest + React Testing Library, Playwright for end-to-end and accessibility checks, pytest with coverage + schemathesis for contract testing, automated via GitHub Actions matrix.  
+ - **Rationale**: These tools align with constitution’s test-first mandate, remain relatively lightweight, and integrate well with Vite/FastAPI without introducing excessive dependencies.  
+ - **Alternatives considered**:  
+   - Jest: heavier configuration when using Vite.  
+   - Cypress: powerful but larger install footprint compared to Playwright for cross-browser tests.  
+   - Locust alternative artillery: Locust integrates with Python ecosystem already in use.
++
++## Offline Task Queue Strategy
++- **Decision**: Persist pending task/reminder payloads in the browser via IndexedDB (using a minimal wrapper) with automatic retry every 30 seconds and manual retry fallback.  
++- **Rationale**: IndexedDB is available natively, satisfies lightweight constraint, and supports structured storage for queued requests without adding heavy libraries.  
++- **Alternatives considered**:  
++  - LocalStorage: simple but lacks transactional guarantees and size limits for queued payloads.  
++  - Service Worker background sync: powerful but increases setup complexity and dependency surface beyond MVP scope.  
++  - Third-party offline libraries (e.g., Workbox): add weight contrary to minimal dependency directive.
++
++## Duplicate Task Detection
++- **Decision**: Guard task creation via a backend service comparing normalized titles over a rolling five-minute window, prompting users with confirmation before creating duplicates.  
++- **Rationale**: Centralizing detection prevents inconsistent logic across clients, supports auditing via ReminderActivity logs, and remains lightweight using existing database indices.  
++- **Alternatives considered**:  
++  - Client-only duplicate warnings: faster but unreliable across devices and cannot enforce confirmation.  
++  - Full-text search tooling: overkill for limited scope and adds extra dependencies.  
++  - Ignoring duplicates: contradicts UX requirement to prevent accidental duplicates.
+*** End Patch
+[2m2025-10-17T21:28:31.559683Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/001-specify-scripts-bash/quickstart.md
+@@
+ - Frontend: `npm run test` (Vitest), `npm run test:e2e` (Playwright)
+-- Backend: `pytest --cov=src`
++- Backend: `pytest --cov=src`
+ - Lint/typecheck: `npm run lint`, `npm run typecheck`, `ruff check`, `mypy`
+ 
+ All tests must be written and run before implementation per constitution; CI enforces coverage ≥90% on changed files.
+ 
+ ## 6. Storybook & Accessibility
+@@
+ ```
+ 
+ ## 9. Performance & Accessibility Checks
+ - Run Lighthouse CI script (`npm run audit`) before merging.
+ - Execute Locust smoke tests (`locust -f locustfile.py --headless -u 50 -r 5`) to confirm reminder endpoints meet 200 ms p95.
++- Validate offline queue sync by running `npm run test:offline` (Vitest suite for `offlineQueue`) and Playwright offline scenario (`npm run test:e2e -- --grep offline`).
+ 
+ ## 10. Feature Flags & Releases
+ - Feature toggles defined in `backend/src/config/flags.py` and consumed in frontend via `/config` endpoint.
+ - Each user story should be deployable independently; verify toggles before release.
+*** End Patch
+[2m2025-10-17T21:28:37.728543Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","tail -n 60 specs/001-specify-scripts-bash/quickstart.md"]}
+[2m2025-10-17T21:28:43.679560Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/001-specify-scripts-bash/quickstart.md
+@@
+ ## 5. Testing (Test-First Enforcement)
+ - Frontend: `npm run test` (Vitest), `npm run test:e2e` (Playwright)
+ - Backend: `pytest --cov=src`
+ - Lint/typecheck: `npm run lint`, `npm run typecheck`, `ruff check`, `mypy`
++- Offline queue suite: `npm run test:offline` (targets `frontend/tests/services/offlineQueue.test.ts`)
+ 
+ All tests must be written and run before implementation per constitution; CI enforces coverage ≥90% on changed files.
+@@
+ ## 9. Performance & Accessibility Checks
+ - Run Lighthouse CI script (`npm run audit`) before merging.
+ - Execute Locust smoke tests (`locust -f locustfile.py --headless -u 50 -r 5`) to confirm reminder endpoints meet 200 ms p95.
++- Run Playwright offline scenario (`npm run test:e2e -- --grep "offline"`) to verify sync pending and retry flows.
+*** End Patch
+[2m2025-10-17T21:28:51.904941Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Update spec and supporting docs to clarify duplicate prevention and offline queue behavior plus ensure ReminderActivity scope is defined"},{"status":"completed","step":"Revise plan/data-model/contracts to align with updated requirements for ReminderActivity logging and reminder activity endpoint"},{"status":"completed","step":"Augment tasks.md to cover missing tasks for reminder activity logging, analytics instrumentation, duplicate title handling, and offline queueing"},{"status":"in_progress","step":"Validate consistency and summarize changes"}]}
+[2m2025-10-17T21:28:55.566627Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","git status -sb"],"workdir":"/home/yiy/workspace/playground/todoapp"}
+[2m2025-10-17T21:29:00.844037Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Update spec and supporting docs to clarify duplicate prevention and offline queue behavior plus ensure ReminderActivity scope is defined"},{"status":"completed","step":"Revise plan/data-model/contracts to align with updated requirements for ReminderActivity logging and reminder activity endpoint"},{"status":"completed","step":"Augment tasks.md to cover missing tasks for reminder activity logging, analytics instrumentation, duplicate title handling, and offline queueing"},{"status":"completed","step":"Validate consistency and summarize changes"}]}
+[2m2025-10-17T21:29:58.467738Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc",".specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks"],"workdir":"/home/yiy/workspace/playground/todoapp","timeout_ms":120000}
+[2m2025-10-17T21:30:01.506308Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg -n \"^###\" spec.md"],"workdir":"/home/yiy/workspace/playground/todoapp/specs/001-specify-scripts-bash"}

@@ -39,6 +39,8 @@ As a busy user, I want to quickly add a task with an optional reminder so I neve
 1. **Given** the user is on the dashboard, **When** they enter a task title, optional notes, select a due date and reminder time, **Then** the task saves and appears at the top of the active list with the reminder details shown.
 2. **Given** the user submits a task with invalid or missing required fields, **When** they attempt to save, **Then** the form highlights the exact fields with guidance while preserving their input.
 3. **Given** the user has set a reminder, **When** the scheduled time arrives, **Then** the system delivers an in-app notification and updates the task badge to indicate an alert has been sent.
+4. **Given** the user submits a task title that matches another task created within the last 5 minutes, **When** they attempt to save, **Then** the system prompts for confirmation before creating the duplicate.
+5. **Given** the user is offline, **When** they create a task with a reminder, **Then** the task saves locally, shows a “Sync pending” status chip, and syncs automatically when connectivity resumes.
 
 **Automated Tests (write first)**:
 - Component test verifying task creation form validation states and token usage.
@@ -49,14 +51,17 @@ As a busy user, I want to quickly add a task with an optional reminder so I neve
 - Apply primary button, spacing, and typography tokens from the design system; maintain consistent focus outlines.
 - Ensure form is fully operable via keyboard and announces validation errors through screen readers.
 - Provide responsive layout for mobile, tablet, and desktop breakpoints with identical affordances.
+- Display offline “Sync pending” chip using semantic status tokens and ensure screen readers announce the pending state.
 
 **Performance Targets**:
 - Form interactions must respond within 100 ms; saving a task must reflect in the list within 500 ms.
 - Lighthouse performance score for the dashboard must remain ≥ 90 after task creation.
+- Offline queue must sync within 5 seconds of connectivity restoration for up to 20 pending tasks.
 
 **Code Quality Considerations**:
 - Requires ADR update for reminder scheduling logic and persistence shape.
 - Reuse shared form and notification utilities to avoid duplication; add stricter typings for reminder payloads.
+- Introduce shared offline queue utility with deterministic tests covering enqueue/dequeue, persistence, and retry behavior.
 
 ---
 
@@ -147,9 +152,9 @@ As a planner, I want a consolidated view of upcoming reminders so I can prepare 
 ### Edge Cases
 
 - Attempting to set a reminder in the past should prompt the user to choose a future time.
-- Duplicate task titles entered within a short period should trigger a confirmation to prevent accidental repeats.
+- Duplicate task titles entered within a five-minute window should trigger a confirmation modal with “Create anyway” and “Cancel” options; cancellation returns focus to the title field.
 - Users deleting a task with a reminder due within the next minute must confirm to avoid missing critical tasks.
-- Offline task creation should queue reminders and display a status chip until synchronization succeeds.
+- Offline task creation should queue reminders, display a “Sync pending” status chip, and automatically retry every 30 seconds until confirmation from the backend is received; failures after three attempts surface an inline error with retry option.
 
 ## Requirements *(mandatory)*
 
