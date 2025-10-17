@@ -7,7 +7,7 @@ description: "Task list template for feature implementation"
 **Input**: Design documents from `/specs/[###-feature-name]/`
 **Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
 
-**Tests**: The examples below include test tasks. Tests are OPTIONAL - only include them if explicitly requested in the feature specification.
+**Tests**: Tests are MANDATORY per the constitution. Write and commit them FIRST; ensure they fail before any implementation task starts.
 
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
 
@@ -46,8 +46,11 @@ description: "Task list template for feature implementation"
 **Purpose**: Project initialization and basic structure
 
 - [ ] T001 Create project structure per implementation plan
-- [ ] T002 Initialize [language] project with [framework] dependencies
-- [ ] T003 [P] Configure linting and formatting tools
+- [ ] T002 Initialize TypeScript + React + Vite frontend and configure shared design system tokens
+- [ ] T003 Initialize backend/API layer (if required) with typed client scaffolding
+- [ ] T004 [P] Configure linting, formatting, type checking, and automated accessibility checks (axe, eslint-plugin-jsx-a11y)
+- [ ] T005 [P] Configure CI workflow to run lint, type check, unit, component, integration, and accessibility suites on all pushes
+- [ ] T006 [P] Install and enforce pre-commit hooks for lint, formatting, type-check, and accessibility snapshots
 
 ---
 
@@ -65,6 +68,10 @@ Examples of foundational tasks (adjust based on your project):
 - [ ] T007 Create base models/entities that all stories depend on
 - [ ] T008 Configure error handling and logging infrastructure
 - [ ] T009 Setup environment configuration management
+- [ ] T010 Establish shared component library with Storybook (or equivalent) and baseline visual regression tests
+- [ ] T011 Document performance budgets and configure bundle analysis tooling
+- [ ] T012 Configure static analysis/security scanning (e.g., npm audit, dependency review) inside CI
+- [ ] T013 Create architecture decision record (ADR) index and template for feature documentation
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -76,21 +83,28 @@ Examples of foundational tasks (adjust based on your project):
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 1 (OPTIONAL - only if tests requested) ⚠️
+### Tests for User Story 1 (WRITE FIRST) ✅
 
 **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T010 [P] [US1] Contract test for [endpoint] in tests/contract/test_[name].py
-- [ ] T011 [P] [US1] Integration test for [user journey] in tests/integration/test_[name].py
+- [ ] T012 [P] [US1] Component test for [UI element] in frontend/tests/components/[name].test.tsx
+- [ ] T013 [P] [US1] Accessibility regression test (axe/lighthouse) for [user flow]
+- [ ] T014 [P] [US1] Contract test for [endpoint] in tests/contract/test_[name].ts
+- [ ] T015 [P] [US1] Integration test for [user journey] in tests/integration/[name].test.ts
+- [ ] T016 [US1] Configure coverage thresholds (≥90% touched files) and add coverage assertions for this story
 
 ### Implementation for User Story 1
 
-- [ ] T012 [P] [US1] Create [Entity1] model in src/models/[entity1].py
-- [ ] T013 [P] [US1] Create [Entity2] model in src/models/[entity2].py
-- [ ] T014 [US1] Implement [Service] in src/services/[service].py (depends on T012, T013)
-- [ ] T015 [US1] Implement [endpoint/feature] in src/[location]/[file].py
-- [ ] T016 [US1] Add validation and error handling
-- [ ] T017 [US1] Add logging for user story 1 operations
+- [ ] T017 [P] [US1] Create [Entity1] model in src/models/[entity1].ts
+- [ ] T018 [P] [US1] Create [Entity2] model in src/models/[entity2].ts
+- [ ] T019 [US1] Implement [Service] in src/services/[service].ts (depends on T017, T018)
+- [ ] T020 [US1] Implement [endpoint/feature] in src/[location]/[file].ts(x)
+- [ ] T021 [US1] Wire UI component in frontend/src/components/[component].tsx using design tokens and responsive breakpoints
+- [ ] T022 [US1] Add validation, optimistic updates, and error handling
+- [ ] T023 [US1] Capture analytics events for [key interactions]
+- [ ] T024 [US1] Update Storybook stories and visual regression baselines
+- [ ] T025 [US1] Update or author ADR covering architectural decisions introduced in this story
+- [ ] T026 [US1] Record Lighthouse/performance results and compare against budgets
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
@@ -102,17 +116,24 @@ Examples of foundational tasks (adjust based on your project):
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 2 (OPTIONAL - only if tests requested) ⚠️
+### Tests for User Story 2 (WRITE FIRST) ✅
 
-- [ ] T018 [P] [US2] Contract test for [endpoint] in tests/contract/test_[name].py
-- [ ] T019 [P] [US2] Integration test for [user journey] in tests/integration/test_[name].py
+- [ ] T024 [P] [US2] Component test for [UI element] in frontend/tests/components/[name].test.tsx
+- [ ] T025 [P] [US2] Accessibility regression test (axe/lighthouse) for [user flow]
+- [ ] T026 [P] [US2] Contract test for [endpoint] in tests/contract/test_[name].ts
+- [ ] T027 [P] [US2] Integration test for [user journey] in tests/integration/[name].test.ts
+- [ ] T028 [US2] Validate coverage thresholds maintained and update coverage reports
 
 ### Implementation for User Story 2
 
-- [ ] T020 [P] [US2] Create [Entity] model in src/models/[entity].py
-- [ ] T021 [US2] Implement [Service] in src/services/[service].py
-- [ ] T022 [US2] Implement [endpoint/feature] in src/[location]/[file].py
-- [ ] T023 [US2] Integrate with User Story 1 components (if needed)
+- [ ] T029 [P] [US2] Create [Entity] model in src/models/[entity].ts
+- [ ] T030 [US2] Implement [Service] in src/services/[service].ts
+- [ ] T031 [US2] Implement [endpoint/feature] in src/[location]/[file].ts(x)
+- [ ] T032 [US2] Integrate with User Story 1 components (if needed)
+- [ ] T033 [US2] Update analytics and telemetry to capture new events
+- [ ] T034 [US2] Refresh Storybook stories and visual regression baselines
+- [ ] T035 [US2] Update ADRs or design notes capturing cross-story architectural impacts
+- [ ] T036 [US2] Run Lighthouse/performance checks and log deltas
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 
@@ -124,16 +145,22 @@ Examples of foundational tasks (adjust based on your project):
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 3 (OPTIONAL - only if tests requested) ⚠️
+### Tests for User Story 3 (WRITE FIRST) ✅
 
-- [ ] T024 [P] [US3] Contract test for [endpoint] in tests/contract/test_[name].py
-- [ ] T025 [P] [US3] Integration test for [user journey] in tests/integration/test_[name].py
+- [ ] T034 [P] [US3] Component test for [UI element] in frontend/tests/components/[name].test.tsx
+- [ ] T035 [P] [US3] Accessibility regression test (axe/lighthouse) for [user flow]
+- [ ] T036 [P] [US3] Contract test for [endpoint] in tests/contract/test_[name].ts
+- [ ] T037 [P] [US3] Integration test for [user journey] in tests/integration/[name].test.ts
+- [ ] T038 [US3] Confirm performance budgets remain within thresholds and capture report
 
 ### Implementation for User Story 3
 
-- [ ] T026 [P] [US3] Create [Entity] model in src/models/[entity].py
-- [ ] T027 [US3] Implement [Service] in src/services/[service].py
-- [ ] T028 [US3] Implement [endpoint/feature] in src/[location]/[file].py
+- [ ] T039 [P] [US3] Create [Entity] model in src/models/[entity].ts
+- [ ] T040 [US3] Implement [Service] in src/services/[service].ts
+- [ ] T041 [US3] Implement [endpoint/feature] in src/[location]/[file].ts(x)
+- [ ] T042 [US3] Sync analytics, performance instrumentation, and documentation updates
+- [ ] T043 [US3] Capture ADR updates or link to existing decisions
+- [ ] T044 [US3] Update performance journal with findings
 
 **Checkpoint**: All user stories should now be independently functional
 
@@ -153,6 +180,8 @@ Examples of foundational tasks (adjust based on your project):
 - [ ] TXXX [P] Additional unit tests (if requested) in tests/unit/
 - [ ] TXXX Security hardening
 - [ ] TXXX Run quickstart.md validation
+- [ ] TXXX Re-run Lighthouse/performance budgets and update documentation
+- [ ] TXXX Conduct code quality audit (lint, dead code scan) and remediate blockers
 
 ---
 
@@ -175,7 +204,7 @@ Examples of foundational tasks (adjust based on your project):
 
 ### Within Each User Story
 
-- Tests (if included) MUST be written and FAIL before implementation
+- Tests MUST be written and FAIL before implementation
 - Models before services
 - Services before endpoints
 - Core implementation before integration
@@ -195,13 +224,13 @@ Examples of foundational tasks (adjust based on your project):
 ## Parallel Example: User Story 1
 
 ```bash
-# Launch all tests for User Story 1 together (if tests requested):
-Task: "Contract test for [endpoint] in tests/contract/test_[name].py"
-Task: "Integration test for [user journey] in tests/integration/test_[name].py"
+# Launch mandatory tests for User Story 1 together:
+Task: "Contract test for [endpoint] in tests/contract/test_[name].ts"
+Task: "Integration test for [user journey] in tests/integration/test_[name].test.ts"
 
 # Launch all models for User Story 1 together:
-Task: "Create [Entity1] model in src/models/[entity1].py"
-Task: "Create [Entity2] model in src/models/[entity2].py"
+Task: "Create [Entity1] model in src/models/[entity1].ts"
+Task: "Create [Entity2] model in src/models/[entity2].ts"
 ```
 
 ---
@@ -212,16 +241,17 @@ Task: "Create [Entity2] model in src/models/[entity2].py"
 
 1. Complete Phase 1: Setup
 2. Complete Phase 2: Foundational (CRITICAL - blocks all stories)
-3. Complete Phase 3: User Story 1
-4. **STOP and VALIDATE**: Test User Story 1 independently
-5. Deploy/demo if ready
+3. Author and run User Story 1 tests (all failing) before implementation
+4. Complete Phase 3: User Story 1 until all tests pass
+5. **STOP and VALIDATE**: Run accessibility + performance budgets and demo
+6. Deploy/demo if ready
 
 ### Incremental Delivery
 
 1. Complete Setup + Foundational → Foundation ready
-2. Add User Story 1 → Test independently → Deploy/Demo (MVP!)
-3. Add User Story 2 → Test independently → Deploy/Demo
-4. Add User Story 3 → Test independently → Deploy/Demo
+2. Add User Story 1 → Write tests first → Make tests pass → Test independently → Deploy/Demo (MVP!)
+3. Add User Story 2 → Write tests first → Make tests pass → Test independently → Deploy/Demo
+4. Add User Story 3 → Write tests first → Make tests pass → Test independently → Deploy/Demo
 5. Each story adds value without breaking previous stories
 
 ### Parallel Team Strategy
@@ -230,10 +260,10 @@ With multiple developers:
 
 1. Team completes Setup + Foundational together
 2. Once Foundational is done:
-   - Developer A: User Story 1
-   - Developer B: User Story 2
-   - Developer C: User Story 3
-3. Stories complete and integrate independently
+   - Developer A: User Story 1 (owns tests + implementation)
+   - Developer B: User Story 2 (owns tests + implementation)
+   - Developer C: User Story 3 (owns tests + implementation)
+3. Stories complete and integrate independently, each behind a feature flag until validated
 
 ---
 
@@ -246,6 +276,5 @@ With multiple developers:
 - Commit after each task or logical group
 - Stop at any checkpoint to validate story independently
 - Avoid: vague tasks, same file conflicts, cross-story dependencies that break independence
-
-
-
+- Capture screenshots/gifs for each story and attach to PR per governance rules
+- Ensure ADR updates, coverage reports, and performance journals are attached to PR descriptions
