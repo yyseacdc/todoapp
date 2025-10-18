@@ -34,20 +34,20 @@ description: "Task list for Modern Todo Reminders implementation"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T011 Create shared Tailwind design tokens in `frontend/src/styles/tokens.ts`
-- [ ] T012 [P] Set up accessibility testing harness in `frontend/tests/setup/a11y.ts`
-- [ ] T013 Configure Vitest and Playwright baselines in `frontend/vitest.config.ts` and `frontend/playwright.config.ts`
-- [ ] T014 [P] Add API client generation scaffold in `frontend/src/services/api/client.ts`
-- [ ] T015 Implement database session and Base metadata in `backend/src/util/db.py`
-- [ ] T016 Configure Alembic environment and base migration in `backend/alembic/env.py` and `backend/alembic/versions/0001_initial.py`
-- [ ] T017 Scaffold FastAPI routing package in `backend/src/api/__init__.py` and `backend/src/api/routes/__init__.py`
-- [ ] T018 Implement reminder scheduler skeleton in `backend/src/services/reminder_scheduler.py`
-- [ ] T019 Create WebSocket connection manager in `backend/src/api/routes/ws.py`
-- [ ] T020 Add telemetry instrumentation utilities in `backend/src/util/telemetry.py`
-- [ ] T021 Define feature flag configuration in `backend/src/config/flags.py` and `frontend/src/services/config.ts`
-- [ ] T022 Configure CI pipeline for lint/test/a11y/perf in `.github/workflows/ci.yml`
-- [ ] T023 [P] Build offline queue storage module using IndexedDB in `frontend/src/services/offlineQueue.ts`
-- [ ] T024 [P] Add Vitest unit tests for offline queue behavior in `frontend/tests/services/offlineQueue.test.ts`
+- [X] T011 Create shared Tailwind design tokens in `frontend/src/styles/tokens.ts`
+- [X] T012 [P] Set up accessibility testing harness in `frontend/tests/setup/a11y.ts`
+- [X] T013 Configure Vitest and Playwright baselines in `frontend/vitest.config.ts` and `frontend/playwright.config.ts`
+- [X] T014 [P] Add API client generation scaffold in `frontend/src/services/api/client.ts`
+- [X] T015 Implement database session and Base metadata in `backend/src/util/db.py`
+- [X] T016 Configure Alembic environment and base migration in `backend/alembic/env.py` and `backend/alembic/versions/0001_initial.py`
+- [X] T017 Scaffold FastAPI routing package in `backend/src/api/__init__.py` and `backend/src/api/routes/__init__.py`
+- [X] T018 Implement reminder scheduler skeleton in `backend/src/services/reminder_scheduler.py`
+- [X] T019 Create WebSocket connection manager in `backend/src/api/routes/ws.py`
+- [X] T020 Add telemetry instrumentation utilities in `backend/src/util/telemetry.py`
+- [X] T021 Define feature flag configuration in `backend/src/config/flags.py` and `frontend/src/services/config.ts`
+- [X] T022 Configure CI pipeline for lint/test/a11y/perf in `.github/workflows/ci.yml`
+- [X] T023 [P] Build offline queue storage module using IndexedDB in `frontend/src/services/offlineQueue.ts`
+- [X] T024 [P] Add Vitest unit tests for offline queue behavior in `frontend/tests/services/offlineQueue.test.ts`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
