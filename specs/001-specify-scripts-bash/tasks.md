@@ -15,16 +15,16 @@ description: "Task list for Modern Todo Reminders implementation"
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create project structure directories in `frontend/`, `backend/`, and `contracts/openapi/`
-- [ ] T002 Scaffold Vite + React + TypeScript app in `frontend/package.json` and baseline source files
-- [ ] T003 Configure Tailwind CSS setup in `frontend/tailwind.config.ts` and `frontend/postcss.config.cjs`
-- [ ] T004 Add ESLint + Prettier configs in `frontend/.eslintrc.cjs` and `frontend/.prettierrc`
-- [ ] T005 Install Storybook with minimal setup in `frontend/.storybook/main.ts`
-- [ ] T006 Initialize FastAPI application entrypoint in `backend/src/main.py`
-- [ ] T007 Define backend dependencies in `backend/requirements.txt` and lock file
-- [ ] T008 Add backend environment template and settings module in `backend/.env.example` and `backend/src/config/settings.py`
-- [ ] T009 Author Dockerfiles for frontend and backend plus `docker-compose.yml` at repo root
-- [ ] T010 Configure repository pre-commit hooks in `.pre-commit-config.yaml` covering lint, type-check, accessibility snapshots
+- [X] T001 Create project structure directories in `frontend/`, `backend/`, and `contracts/openapi/`
+- [X] T002 Scaffold Vite + React + TypeScript app in `frontend/package.json` and baseline source files
+- [X] T003 Configure Tailwind CSS setup in `frontend/tailwind.config.ts` and `frontend/postcss.config.cjs`
+- [X] T004 Add ESLint + Prettier configs in `frontend/.eslintrc.cjs` and `frontend/.prettierrc`
+- [X] T005 Install Storybook with minimal setup in `frontend/.storybook/main.ts`
+- [X] T006 Initialize FastAPI application entrypoint in `backend/src/main.py`
+- [X] T007 Define backend dependencies in `backend/requirements.txt` and lock file
+- [X] T008 Add backend environment template and settings module in `backend/.env.example` and `backend/src/config/settings.py`
+- [X] T009 Author Dockerfiles for frontend and backend plus `docker-compose.yml` at repo root
+- [X] T010 Configure repository pre-commit hooks in `.pre-commit-config.yaml` covering lint, type-check, accessibility snapshots
 
 ---
 
