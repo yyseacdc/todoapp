@@ -15,9 +15,14 @@ class ReminderScheduler:
         self._stop_event = asyncio.Event()
         self._poll_interval = settings.reminder_poll_interval
         self._callbacks: list[Callable[[], Awaitable[None]]] = []
+        self._pending: list[str] = []
 
     def register_callback(self, callback: Callable[[], Awaitable[None]]) -> None:
         self._callbacks.append(callback)
+
+    async def enqueue_reminder(self, reminder_id: str) -> None:
+        self._pending.append(reminder_id)
+        logger.info("Queued reminder %s", reminder_id)
 
     def start(self) -> None:
         if self._task is None or self._task.done():
@@ -29,6 +34,7 @@ class ReminderScheduler:
         if self._task is not None:
             self._stop_event.set()
             await self._task
+            self._task = None
             logger.info("Reminder scheduler stopped")
 
     async def _run(self) -> None:
@@ -40,6 +46,9 @@ class ReminderScheduler:
                 continue
 
     async def _dispatch_callbacks(self) -> None:
+        if self._pending:
+            logger.info("Processing %d pending reminders", len(self._pending))
+            self._pending.clear()
         for callback in self._callbacks:
             try:
                 await callback()

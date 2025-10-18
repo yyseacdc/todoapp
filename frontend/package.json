@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit",
-    "test": "vitest",
+    "test": "vitest --coverage",
     "test:e2e": "playwright test",
     "test:a11y": "playwright test --config playwright.a11y.config.ts",
     "storybook": "storybook dev -p 6006",

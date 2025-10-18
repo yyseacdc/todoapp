@@ -120,5 +120,3 @@ export class OfflineQueue<TPayload> {
     }
   }
 }
-
-export const offlineQueue = new OfflineQueue<Record<string, unknown>>();
