@@ -48,7 +48,8 @@ Services:
 Stop with `docker compose down`.
 
 ## 5. Testing (Test-First Enforcement)
-- Frontend: `npm run test` (Vitest), `npm run test:e2e` (Playwright)
+- Frontend unit/component coverage: `npm run test -- --run --exclude tests/e2e`
+- Frontend end-to-end suite: `npx playwright test` (after `npx playwright install` on first run)
 - Backend: `pytest --cov=src`
 - Lint/typecheck: `npm run lint`, `npm run typecheck`, `ruff check`, `mypy`
 - Offline queue suite: `npm run test:offline` (targets `frontend/tests/services/offlineQueue.test.ts`)
@@ -69,13 +70,15 @@ alembic upgrade head    # apply migrations
 alembic revision --autogenerate -m "describe change"  # create new migration
 ```
 
-## 8. API Contracts
+## 8. API Contracts & Telemetry
 Regenerate typed clients after contract updates:
 ```bash
 pnpm openapi --input ../specs/001-specify-scripts-bash/contracts/openapi.yaml \
              --output frontend/src/services/api
 ```
 (Adjust command based on selected codegen tool.)
+
+Telemetry dashboards rely on `docs/performance/` notes and `docs/adrs/` decisions—update these when instrumentation changes.
 
 ## 9. Performance & Accessibility Checks
 - Run Lighthouse CI script (`npm run audit`) before merging.
