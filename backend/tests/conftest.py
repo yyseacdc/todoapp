@@ -48,4 +48,3 @@ async def client(session_factory: async_sessionmaker) -> AsyncIterator[AsyncClie
 
     app.dependency_overrides.pop(get_session, None)
     await scheduler.stop()
-*** End Patch

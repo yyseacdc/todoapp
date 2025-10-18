@@ -3,9 +3,11 @@ import logging
 from fastapi import FastAPI
 
 from .api import api_router
+from .api.routes.ws import notify_reminders_update
 from .config.settings import settings
 from .services.reminder_scheduler import scheduler
-from .util.db import Base, get_engine
+from .services.reminder_service import ReminderService
+from .util.db import Base, get_engine, get_session_maker
 
 app = FastAPI(
     title=settings.app_name,
@@ -28,7 +30,17 @@ async def on_startup() -> None:
     engine = get_engine()
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+    session_factory = get_session_maker()
+
+    async def broadcast_upcoming() -> None:
+        async with session_factory() as session:
+            service = ReminderService(session)
+            await service.list_upcoming()
+        await notify_reminders_update()
+
+    scheduler.register_callback(broadcast_upcoming)
     scheduler.start()
+    await notify_reminders_update()
 
 
 @app.on_event("shutdown")

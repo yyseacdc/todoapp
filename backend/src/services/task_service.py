@@ -4,12 +4,13 @@ from datetime import datetime
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from ..api.routes.ws import notify_reminders_update
+from ..api.schemas.task import TaskCreate
 from ..models.reminder import Reminder, ReminderStatus
 from ..models.reminder_activity import ReminderActivity, ReminderEvent
 from ..models.task import Task, TaskPriority, TaskStatus
-from ..util.telemetry import log_event
-from ..api.schemas.task import TaskCreate
 from ..services.reminder_scheduler import scheduler
+from ..util.telemetry import log_event
 from .duplicate_guard import find_recent_duplicate
 
 
@@ -67,6 +68,7 @@ class TaskService:
 
         if task.reminder:
             await scheduler.enqueue_reminder(task.reminder.id)
+            await notify_reminders_update()
 
         log_event('task.created', payload={'taskId': task.id, 'offline': payload.offline})
         if task.reminder:

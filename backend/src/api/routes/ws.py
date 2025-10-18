@@ -25,6 +25,10 @@ class ConnectionManager:
 manager = ConnectionManager()
 
 
+async def notify_reminders_update() -> None:
+    await manager.broadcast({'event': 'reminders.updated'})
+
+
 @router.websocket('/reminders')
 async def reminders_socket(websocket: WebSocket) -> None:
     await manager.connect(websocket)

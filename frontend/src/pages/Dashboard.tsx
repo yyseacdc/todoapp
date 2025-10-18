@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 
+import RemindersPanel from '../components/RemindersPanel';
 import ReminderToast from '../components/ReminderToast';
 import TaskCard from '../components/TaskCard';
 import TaskForm, { TaskFormPayload } from '../components/TaskForm';
+import { useReminders } from '../hooks/useReminders';
 import { useTasks, type TaskDraft } from '../hooks/useTasks';
 import { trackEvent } from '../services/analytics';
 
@@ -19,6 +21,7 @@ const Dashboard: React.FC = () => {
     isOffline,
     hasReminderToast
   } = useTasks();
+  const { reminders, snooze, dismiss, activity, loadActivity } = useReminders();
   const [pendingDraft, setPendingDraft] = useState<TaskDraft | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -106,6 +109,14 @@ const Dashboard: React.FC = () => {
           </div>
         </section>
       )}
+
+      <RemindersPanel
+        reminders={reminders}
+        onSnooze={snooze}
+        onDismiss={dismiss}
+        loadActivity={loadActivity}
+        activityByReminder={activity}
+      />
 
       {toastMessage && hasReminderToast && <ReminderToast message={toastMessage} />}
     </main>
