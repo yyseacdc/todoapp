@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from .api import api_router
 from .config.settings import settings
 from .services.reminder_scheduler import scheduler
+from .util.db import Base, get_engine
 
 app = FastAPI(
     title=settings.app_name,
@@ -24,9 +25,14 @@ async def health_check() -> dict[str, str]:
 @app.on_event("startup")
 async def on_startup() -> None:
     logging.basicConfig(level=logging.INFO)
+    engine = get_engine()
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
     scheduler.start()
 
 
 @app.on_event("shutdown")
 async def on_shutdown() -> None:
     await scheduler.stop()
+    engine = get_engine()
+    await engine.dispose()

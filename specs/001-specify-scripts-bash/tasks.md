@@ -61,33 +61,33 @@ description: "Task list for Modern Todo Reminders implementation"
 
 ### Tests for User Story 1 (WRITE FIRST) ✅
 
-- [ ] T025 [P] [US1] Write Vitest component tests for TaskForm covering validation, duplicate confirmation, and offline chip in `frontend/tests/components/TaskForm.test.tsx`
-- [ ] T026 [P] [US1] Write Playwright end-to-end spec for task creation (online/offline with reminder) in `frontend/tests/e2e/task-create-reminder.spec.ts`
-- [ ] T027 [P] [US1] Write FastAPI contract tests for `POST /tasks` and reminder scheduling in `backend/tests/contract/test_create_task.py`
-- [ ] T028 [P] [US1] Write backend unit tests for reminder scheduler logging to ReminderActivity in `backend/tests/unit/test_reminder_logging.py`
-- [ ] T029 [US1] Enforce coverage thresholds (≥90% touched files, 100% reminder utilities) in `frontend/package.json` and `backend/pyproject.toml`
+- [X] T025 [P] [US1] Write Vitest component tests for TaskForm covering validation, duplicate confirmation, and offline chip in `frontend/tests/components/TaskForm.test.tsx`
+- [X] T026 [P] [US1] Write Playwright end-to-end spec for task creation (online/offline with reminder) in `frontend/tests/e2e/task-create-reminder.spec.ts`
+- [X] T027 [P] [US1] Write FastAPI contract tests for `POST /tasks` and reminder scheduling in `backend/tests/contract/test_create_task.py`
+- [X] T028 [P] [US1] Write backend unit tests for reminder scheduler logging to ReminderActivity in `backend/tests/unit/test_reminder_logging.py`
+- [X] T029 [US1] Enforce coverage thresholds (≥90% touched files, 100% reminder utilities) in `frontend/package.json` and `backend/pyproject.toml`
 
 ### Implementation for User Story 1
 
-- [ ] T030 [US1] Implement `Task` model with fields and constraints from spec in `backend/src/models/task.py`
-- [ ] T031 [US1] Implement `Reminder` model with scheduling constraints in `backend/src/models/reminder.py`
-- [ ] T032 [US1] Create Alembic migration for tasks and reminders in `backend/alembic/versions/0002_create_tasks_and_reminders.py`
-- [ ] T033 [US1] Implement `ReminderActivity` model with indexes in `backend/src/models/reminder_activity.py`
-- [ ] T034 [US1] Create Alembic migration for reminder activity table in `backend/alembic/versions/0003_create_reminder_activity.py`
-- [ ] T035 [P] [US1] Implement Pydantic schemas for tasks, reminders, and reminder activity in `backend/src/api/schemas/task.py`
-- [ ] T036 [US1] Implement duplicate title guard service in `backend/src/services/duplicate_guard.py`
-- [ ] T037 [US1] Implement task service create logic with duplicate confirmation and offline flags in `backend/src/services/task_service.py`
-- [ ] T038 [US1] Add `POST /tasks` endpoint with confirmation response handling in `backend/src/api/routes/tasks.py`
-- [ ] T039 [US1] Integrate reminder scheduler enqueue and delivery logging in `backend/src/services/reminder_scheduler.py`
-- [ ] T040 [P] [US1] Generate typed API client methods for task creation and duplicate confirmation in `frontend/src/services/api/tasksClient.ts`
-- [ ] T041 [P] [US1] Build TaskForm component using design tokens with duplicate confirmation modal in `frontend/src/components/TaskForm.tsx`
-- [ ] T042 [US1] Implement offline queue hook flushing pending tasks in `frontend/src/hooks/useOfflineQueue.ts`
-- [ ] T043 [US1] Update dashboard to display sync pending status and reminder metadata in `frontend/src/pages/Dashboard.tsx`
-- [ ] T044 [P] [US1] Implement reminder toast/notification UI in `frontend/src/components/ReminderToast.tsx`
-- [ ] T045 [US1] Update tasks state hook to merge WebSocket updates and offline queue in `frontend/src/hooks/useTasks.ts`
-- [ ] T046 [US1] Instrument analytics events for task creation and reminder scheduling in `frontend/src/services/analytics.ts`
-- [ ] T047 [US1] Document Storybook stories and visual tests for TaskForm (online/offline/duplicate) in `frontend/src/components/TaskForm.stories.tsx`
-- [ ] T048 [US1] Record ADR covering reminder scheduling, duplicate guard, and offline queue design in `docs/adrs/001-reminder-scheduling-offline.md`
+- [X] T030 [US1] Implement `Task` model with fields and constraints from spec in `backend/src/models/task.py`
+- [X] T031 [US1] Implement `Reminder` model with scheduling constraints in `backend/src/models/reminder.py`
+- [X] T032 [US1] Create Alembic migration for tasks and reminders in `backend/alembic/versions/0002_create_tasks_and_reminders.py`
+- [X] T033 [US1] Implement `ReminderActivity` model with indexes in `backend/src/models/reminder_activity.py`
+- [X] T034 [US1] Create Alembic migration for reminder activity table in `backend/alembic/versions/0003_create_reminder_activity.py`
+- [X] T035 [P] [US1] Implement Pydantic schemas for tasks, reminders, and reminder activity in `backend/src/api/schemas/task.py`
+- [X] T036 [US1] Implement duplicate title guard service in `backend/src/services/duplicate_guard.py`
+- [X] T037 [US1] Implement task service create logic with duplicate confirmation and offline flags in `backend/src/services/task_service.py`
+- [X] T038 [US1] Add `POST /tasks` endpoint with confirmation response handling in `backend/src/api/routes/tasks.py`
+- [X] T039 [US1] Integrate reminder scheduler enqueue and delivery logging in `backend/src/services/reminder_scheduler.py`
+- [X] T040 [P] [US1] Generate typed API client methods for task creation and duplicate confirmation in `frontend/src/services/api/tasksClient.ts`
+- [X] T041 [P] [US1] Build TaskForm component using design tokens with duplicate confirmation modal in `frontend/src/components/TaskForm.tsx`
+- [X] T042 [US1] Implement offline queue hook flushing pending tasks in `frontend/src/hooks/useOfflineQueue.ts`
+- [X] T043 [US1] Update dashboard to display sync pending status and reminder metadata in `frontend/src/pages/Dashboard.tsx`
+- [X] T044 [P] [US1] Implement reminder toast/notification UI in `frontend/src/components/ReminderToast.tsx`
+- [X] T045 [US1] Update tasks state hook to merge WebSocket updates and offline queue in `frontend/src/hooks/useTasks.ts`
+- [X] T046 [US1] Instrument analytics events for task creation and reminder scheduling in `frontend/src/services/analytics.ts`
+- [X] T047 [US1] Document Storybook stories and visual tests for TaskForm (online/offline/duplicate) in `frontend/src/components/TaskForm.stories.tsx`
+- [X] T048 [US1] Record ADR covering reminder scheduling, duplicate guard, and offline queue design in `docs/adrs/001-reminder-scheduling-offline.md`
 
 **Checkpoint**: User Story 1 delivers MVP slice (task creation + reminders + logging) ready for demo behind feature flag.
 
