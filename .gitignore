@@ -1,0 +1,54 @@
+# macOS & Windows
+.DS_Store
+Thumbs.db
+
+# Editors & tooling
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node.js / frontend
+node_modules/
+frontend/node_modules/
+frontend/dist/
+dist/
+build/
+coverage/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.tsbuildinfo
+
+# Python / backend
+__pycache__/
+*.py[cod]
+*.so
+.venv/
+venv/
+env/
+backend/.venv/
+backend/venv/
+*.egg-info/
+backend/dist/
+backend/build/
+.pytest_cache/
+.mypy_cache/
+
+# Environment & credentials
+.env
+.env.*
+backend/.env
+frontend/.env.local
+
+# SQLite runtime files
+*.db
+*.sqlite3
+*.db-journal
+
+# Reports & artifacts
+coverage/
+# Docker & containers
+*.pid

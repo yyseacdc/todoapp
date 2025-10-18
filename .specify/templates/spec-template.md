@@ -18,6 +18,12 @@
   - Tested independently
   - Deployed independently
   - Demonstrated to users independently
+
+  Constitution alignment:
+  - Capture UX decisions referencing the shared design system tokens.
+  - Declare the automated tests you will write FIRST (they must fail before implementation).
+  - Specify accessibility + performance acceptance criteria alongside functional outcomes.
+  - Record code quality considerations (linting implications, shared utilities, ADR updates).
 -->
 
 ### User Story 1 - [Brief Title] (Priority: P1)
@@ -33,6 +39,18 @@
 1. **Given** [initial state], **When** [action], **Then** [expected outcome]
 2. **Given** [initial state], **When** [action], **Then** [expected outcome]
 
+**Automated Tests (write first)**:
+- [Component/contract/integration test to add before implementation]
+
+**UX & Accessibility Notes**:
+- [Design tokens, responsive breakpoints, WCAG checks that apply]
+
+**Performance Targets**:
+- [Metrics to validate, e.g., "Lighthouse performance ≥ 90, interaction <100 ms"]
+
+**Code Quality Considerations**:
+- [Architecture notes, ADR impacts, shared utilities, refactoring needed]
+
 ---
 
 ### User Story 2 - [Brief Title] (Priority: P2)
@@ -46,6 +64,18 @@
 **Acceptance Scenarios**:
 
 1. **Given** [initial state], **When** [action], **Then** [expected outcome]
+
+**Automated Tests (write first)**:
+- [Component/contract/integration test to add before implementation]
+
+**UX & Accessibility Notes**:
+- [Design tokens, responsive breakpoints, WCAG checks that apply]
+
+**Performance Targets**:
+- [Metrics to validate, e.g., "Bundle delta < 10 KB", "API p95 < 200 ms"]
+
+**Code Quality Considerations**:
+- [Architecture notes, ADR impacts, shared utilities, refactoring needed]
 
 ---
 
@@ -61,9 +91,40 @@
 
 1. **Given** [initial state], **When** [action], **Then** [expected outcome]
 
+**Automated Tests (write first)**:
+- [Component/contract/integration test to add before implementation]
+
+**UX & Accessibility Notes**:
+- [Design tokens, responsive breakpoints, WCAG checks that apply]
+
+**Performance Targets**:
+- [Metrics to validate]
+
+**Code Quality Considerations**:
+- [Architecture notes, ADR impacts, shared utilities, refactoring needed]
+
 ---
 
 [Add more user stories as needed, each with an assigned priority]
+
+### UX & Accessibility Standards
+
+- Ensure responsive behavior across mobile (375px), tablet (768px), and desktop (1440px) breakpoints.
+- Confirm contrast ratios meet WCAG 2.1 AA for text, icons, and interactive states.
+- Document keyboard flows (focus order, shortcuts, command palette) and screen reader expectations.
+- Note any animations or transitions and provide reduced-motion alternatives.
+
+### Performance Benchmarks
+
+- Baseline Lighthouse scores, bundle sizes, and interaction timing expectations.
+- Target API/service latency thresholds with links to planned load-testing approach.
+- Identify instrumentation needed to capture performance metrics post-release.
+
+### Code Quality Standards
+
+- Reference applicable ADRs or required updates to architecture documentation.
+- Enumerate linting, formatting, and type-checking considerations specific to this feature.
+- Note refactors or shared utilities that must be extracted to avoid duplication.
 
 ### Edge Cases
 
@@ -113,4 +174,3 @@
 - **SC-002**: [Measurable metric, e.g., "System handles 1000 concurrent users without degradation"]
 - **SC-003**: [User satisfaction metric, e.g., "90% of users successfully complete primary task on first attempt"]
 - **SC-004**: [Business metric, e.g., "Reduce support tickets related to [X] by 50%"]
-

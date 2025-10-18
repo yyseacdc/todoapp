@@ -31,7 +31,13 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- Confirm **Consistent, Accessible Experience**: planned UI references the design system tokens, responsive breakpoints, and WCAG AA acceptance checks.
+- Confirm **Component-Driven Web Architecture**: frontend stack uses TypeScript + component framework with typed API client strategy captured in plan.
+- Confirm **Test-First Delivery**: enumerate the automated tests to be written first (component, contract, integration) and the failure expected before implementation; include target coverage levels.
+- Confirm **Production-Grade Code Craftsmanship**: document linting, formatting, ADR updates, and review strategy that will guard maintainability for this work.
+- Confirm **Incremental Value Delivery**: user stories are vertical slices with independent deployments, each mapped to a feature flag if needed.
+- Confirm **Performance-Focused Experience**: outline performance budgets, load expectations, and validation tooling (Lighthouse, bundle analysis, load tests).
+- Confirm **Sustainable Quality Automation**: CI jobs, static analysis, telemetry, and accessibility audits required for this work are documented and resourced.
 
 ## Project Structure
 
@@ -102,4 +108,3 @@ directories captured above]
 |-----------|------------|-------------------------------------|
 | [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
 | [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
-

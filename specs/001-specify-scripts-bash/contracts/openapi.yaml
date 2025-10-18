@@ -1,0 +1,499 @@
+openapi: 3.1.0
+info:
+  title: Modern Todo Reminders API
+  version: 0.1.0
+  description: >
+    Lightweight REST API for managing tasks, reminders, and reminder activity in the Modern Todo Reminders application.
+servers:
+  - url: https://api.todoapp.local/v1
+    description: Production (placeholder)
+  - url: http://localhost:8000/v1
+    description: Local development
+
+tags:
+  - name: Tasks
+    description: Task lifecycle management
+  - name: Reminders
+    description: Reminder scheduling and interaction
+  - name: Activity
+    description: Reminder activity logs
+
+paths:
+  /tasks:
+    post:
+      tags: [Tasks]
+      summary: Create a new task with optional reminder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTaskRequest'
+      responses:
+        '201':
+          description: Task created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+        '409':
+          description: Duplicate task detected; confirmation required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DuplicateTaskResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    get:
+      tags: [Tasks]
+      summary: List tasks by status
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [active, completed, deleted]
+          description: Filter by task status; defaults to active
+      responses:
+        '200':
+          description: List of tasks
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TaskResponse'
+  /tasks/{taskId}:
+    patch:
+      tags: [Tasks]
+      summary: Update task details
+      parameters:
+        - $ref: '#/components/parameters/TaskId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTaskRequest'
+      responses:
+        '200':
+          description: Updated task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+        '404':
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags: [Tasks]
+      summary: Delete (soft delete) a task
+      parameters:
+        - $ref: '#/components/parameters/TaskId'
+      responses:
+        '204':
+          description: Task deleted
+        '404':
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /tasks/{taskId}/complete:
+    post:
+      tags: [Tasks]
+      summary: Mark a task as completed
+      parameters:
+        - $ref: '#/components/parameters/TaskId'
+      responses:
+        '200':
+          description: Task marked completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+        '409':
+          description: Task already completed or deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /tasks/{taskId}/undo:
+    post:
+      tags: [Tasks]
+      summary: Undo task completion
+      parameters:
+        - $ref: '#/components/parameters/TaskId'
+      responses:
+        '200':
+          description: Task restored to active
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+        '409':
+          description: Undo window elapsed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /tasks/{taskId}/reminder:
+    patch:
+      tags: [Reminders]
+      summary: Create or update a reminder for a task
+      parameters:
+        - $ref: '#/components/parameters/TaskId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertReminderRequest'
+      responses:
+        '200':
+          description: Reminder upserted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReminderResponse'
+        '422':
+          description: Invalid reminder schedule
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags: [Reminders]
+      summary: Cancel an existing reminder
+      parameters:
+        - $ref: '#/components/parameters/TaskId'
+      responses:
+        '204':
+          description: Reminder cancelled
+        '404':
+          description: Reminder not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /reminders/upcoming:
+    get:
+      tags: [Reminders]
+      summary: List upcoming reminders for the next 48 hours
+      responses:
+        '200':
+          description: Upcoming reminders
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ReminderResponse'
+  /reminders/{reminderId}/snooze:
+    post:
+      tags: [Reminders]
+      summary: Snooze a reminder
+      parameters:
+        - $ref: '#/components/parameters/ReminderId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SnoozeReminderRequest'
+      responses:
+        '200':
+          description: Reminder snoozed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReminderResponse'
+        '409':
+          description: Reminder not in scheduled state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /reminders/{reminderId}/dismiss:
+    post:
+      tags: [Reminders]
+      summary: Dismiss a reminder
+      parameters:
+        - $ref: '#/components/parameters/ReminderId'
+      responses:
+        '200':
+          description: Reminder dismissed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReminderResponse'
+        '404':
+          description: Reminder not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /reminders/activity:
+    get:
+      tags: [Activity]
+      summary: Retrieve reminder activity log (paginated)
+      parameters:
+        - in: query
+          name: reminderId
+          schema:
+            type: string
+            format: uuid
+          description: Filter by reminder ID
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+        - in: query
+          name: cursor
+          schema:
+            type: string
+          description: Opaque cursor for pagination
+      responses:
+        '200':
+          description: Activity entries
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ReminderActivityResponse'
+                  nextCursor:
+                    type: string
+                    nullable: true
+
+components:
+  parameters:
+    TaskId:
+      name: taskId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    ReminderId:
+      name: reminderId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+  schemas:
+    TaskResponse:
+      type: object
+      required:
+        - id
+        - title
+        - status
+        - priority
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        notes:
+          type: string
+          nullable: true
+          maxLength: 2000
+        dueAt:
+          type: string
+          format: date-time
+          nullable: true
+        priority:
+          type: string
+          enum: [low, normal, high]
+        status:
+          type: string
+          enum: [active, completed, deleted]
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: string
+          format: date-time
+          nullable: true
+        reminder:
+          $ref: '#/components/schemas/ReminderResponse'
+          nullable: true
+    CreateTaskRequest:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 120
+        notes:
+          type: string
+          maxLength: 2000
+        dueAt:
+          type: string
+          format: date-time
+          nullable: true
+        priority:
+          type: string
+          enum: [low, normal, high]
+          default: normal
+        reminder:
+          $ref: '#/components/schemas/ReminderInput'
+          nullable: true
+    UpdateTaskRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 120
+        notes:
+          type: string
+          maxLength: 2000
+        dueAt:
+          type: string
+          format: date-time
+          nullable: true
+        priority:
+          type: string
+          enum: [low, normal, high]
+        status:
+          type: string
+          enum: [active, completed, deleted]
+          description: Primarily used for administrative actions; user-facing flows should call dedicated endpoints.
+    ReminderInput:
+      type: object
+      required:
+        - scheduledFor
+      properties:
+        scheduledFor:
+          type: string
+          format: date-time
+        channel:
+          type: string
+          enum: [in_app]
+          default: in_app
+    ReminderResponse:
+      type: object
+      required:
+        - id
+        - taskId
+        - scheduledFor
+        - status
+      properties:
+        id:
+          type: string
+          format: uuid
+        taskId:
+          type: string
+          format: uuid
+        scheduledFor:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [scheduled, sent, cancelled, snoozed]
+        snoozeUntil:
+          type: string
+          format: date-time
+          nullable: true
+        channel:
+          type: string
+          enum: [in_app]
+          default: in_app
+    UpsertReminderRequest:
+      allOf:
+        - $ref: '#/components/schemas/ReminderInput'
+      properties:
+        snoozeUntil:
+          type: string
+          format: date-time
+          nullable: true
+    SnoozeReminderRequest:
+      type: object
+      required:
+        - snoozeUntil
+      properties:
+        snoozeUntil:
+          type: string
+          format: date-time
+    ReminderActivityResponse:
+      type: object
+      required:
+        - id
+        - reminderId
+        - eventType
+        - eventTime
+      properties:
+        id:
+          type: string
+          format: uuid
+        reminderId:
+          type: string
+          format: uuid
+        eventType:
+          type: string
+          enum: [delivered, dismissed, snoozed, error]
+        eventTime:
+          type: string
+          format: date-time
+        metadata:
+          type: object
+          additionalProperties: true
+          nullable: true
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+
+    DuplicateTaskResponse:
+      type: object
+      required:
+        - duplicateDetected
+        - existingTask
+      properties:
+        duplicateDetected:
+          type: boolean
+          const: true
+        existingTask:
+          $ref: '#/components/schemas/TaskResponse'
+
+x-notes:
+  websocket:
+    description: |
+      Real-time reminder updates are delivered via WebSocket at `ws://{host}/ws/reminders`.
+      Messages follow `{ "event": "reminder_due", "data": ReminderResponse }`.
