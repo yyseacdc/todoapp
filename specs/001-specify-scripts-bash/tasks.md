@@ -130,23 +130,23 @@ description: "Task list for Modern Todo Reminders implementation"
 
 ### Tests for User Story 3 (WRITE FIRST) ✅
 
-- [ ] T062 [P] [US3] Write Vitest tests for RemindersPanel component sorting and accessibility in `frontend/tests/components/RemindersPanel.test.tsx`
-- [ ] T063 [P] [US3] Write Playwright spec for reminders panel interactions in `frontend/tests/e2e/reminders-panel.spec.ts`
-- [ ] T064 [P] [US3] Write backend integration tests for upcoming reminders, snooze/dismiss, and `GET /reminders/activity` in `backend/tests/integration/test_reminders_panel.py`
+- [X] T062 [P] [US3] Write Vitest tests for RemindersPanel component sorting and accessibility in `frontend/tests/components/RemindersPanel.test.tsx`
+- [X] T063 [P] [US3] Write Playwright spec for reminders panel interactions in `frontend/tests/e2e/reminders-panel.spec.ts`
+- [X] T064 [P] [US3] Write backend integration tests for upcoming reminders, snooze/dismiss, and `GET /reminders/activity` in `backend/tests/integration/test_reminders_panel.py`
 
 ### Implementation for User Story 3
 
-- [ ] T065 [US3] Implement reminder query services for upcoming view in `backend/src/services/reminder_service.py`
-- [ ] T066 [US3] Add `GET /reminders/upcoming` endpoint in `backend/src/api/routes/reminders.py`
-- [ ] T067 [US3] Add snooze and dismiss endpoints in `backend/src/api/routes/reminders.py`
-- [ ] T068 [US3] Implement `GET /reminders/activity` endpoint with pagination in `backend/src/api/routes/reminders.py`
-- [ ] T069 [US3] Broadcast reminder updates and activity events over WebSocket in `backend/src/services/reminder_scheduler.py`
-- [ ] T070 [P] [US3] Build RemindersPanel UI with virtualization in `frontend/src/components/RemindersPanel.tsx`
-- [ ] T071 [US3] Integrate reminders panel into dashboard layout in `frontend/src/pages/Dashboard.tsx`
-- [ ] T072 [P] [US3] Implement reminder row actions and state hook in `frontend/src/components/ReminderRow.tsx`
-- [ ] T073 [US3] Extend analytics tracking for panel engagement and activity views in `frontend/src/services/analytics.ts`
-- [ ] T074 [US3] Add RemindersPanel Storybook stories and visual checks in `frontend/src/components/RemindersPanel.stories.tsx`
-- [ ] T075 [US3] Log performance findings for reminder workload and activity feed in `docs/performance/reminders.md`
+- [X] T065 [US3] Implement reminder query services for upcoming view in `backend/src/services/reminder_service.py`
+- [X] T066 [US3] Add `GET /reminders/upcoming` endpoint in `backend/src/api/routes/reminders.py`
+- [X] T067 [US3] Add snooze and dismiss endpoints in `backend/src/api/routes/reminders.py`
+- [X] T068 [US3] Implement `GET /reminders/activity` endpoint with pagination in `backend/src/api/routes/reminders.py`
+- [X] T069 [US3] Broadcast reminder updates and activity events over WebSocket in `backend/src/services/reminder_scheduler.py`
+- [X] T070 [P] [US3] Build RemindersPanel UI with virtualization in `frontend/src/components/RemindersPanel.tsx`
+- [X] T071 [US3] Integrate reminders panel into dashboard layout in `frontend/src/pages/Dashboard.tsx`
+- [X] T072 [P] [US3] Implement reminder row actions and state hook in `frontend/src/components/ReminderRow.tsx`
+- [X] T073 [US3] Extend analytics tracking for panel engagement and activity views in `frontend/src/services/analytics.ts`
+- [X] T074 [US3] Add RemindersPanel Storybook stories and visual checks in `frontend/src/components/RemindersPanel.stories.tsx`
+- [X] T075 [US3] Log performance findings for reminder workload and activity feed in `docs/performance/reminders.md`
 
 **Checkpoint**: User Story 3 delivers full reminders overview with actionable controls, activity feed, and telemetry.
 

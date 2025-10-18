@@ -1,11 +1,13 @@
-from datetime import datetime
+from __future__ import annotations
+
+from datetime import datetime, timedelta
 from typing import Any
 
 from pydantic import BaseModel, Field, validator
 
-from ...models.task import TaskPriority, TaskStatus
 from ...models.reminder import ReminderStatus
 from ...models.reminder_activity import ReminderEvent
+from ...models.task import TaskPriority, TaskStatus
 
 
 class ReminderInput(BaseModel):
@@ -63,3 +65,38 @@ class TaskResponse(BaseModel):
 class DuplicateTaskResponse(BaseModel):
     duplicateDetected: bool = True
     existingTask: TaskResponse
+
+
+class ReminderSummary(BaseModel):
+    id: str
+    taskId: str
+    taskTitle: str
+    scheduledFor: datetime
+    status: ReminderStatus
+    snoozeUntil: datetime | None = None
+
+
+class UpcomingRemindersResponse(BaseModel):
+    data: list[ReminderSummary]
+
+
+class ReminderActivityLog(BaseModel):
+    id: str
+    reminderId: str
+    eventType: ReminderEvent
+    eventTime: datetime
+    metadata: dict[str, Any] | None = None
+
+
+class ReminderActivityListResponse(BaseModel):
+    data: list[ReminderActivityLog]
+
+
+class ReminderSnoozeRequest(BaseModel):
+    snoozeUntil: datetime = Field(..., description="ISO timestamp to snooze until")
+
+    @validator('snoozeUntil')
+    def validate_future_time(cls, value: datetime) -> datetime:
+        if value <= datetime.utcnow() + timedelta(seconds=30):
+            raise ValueError('Snooze must be at least 30 seconds in the future')
+        return value
