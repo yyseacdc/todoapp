@@ -1,12 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
+
 import TaskForm from './TaskForm';
 
 const meta: Meta<typeof TaskForm> = {
   title: 'Components/TaskForm',
   component: TaskForm,
   args: {
-    onSubmit: async () => undefined,
-    onDuplicateConfirm: () => undefined,
+    onSubmit: async () => ({ duplicate: false }),
+    onDuplicateConfirm: async () => undefined,
     onDuplicateDismiss: () => undefined,
     offline: false
   }

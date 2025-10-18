@@ -108,10 +108,12 @@ export function useTasks() {
         return {};
       } catch (error) {
         if (error instanceof ApiError && error.status === 409 && error.body) {
-          const existing = (error.body as any).existingTask;
-          setDuplicateCandidate(mapTaskDto(existing as TaskDto));
-          trackEvent('task.duplicate', { title: draft.title });
-          return { duplicate: true };
+          const body = error.body as { existingTask?: TaskDto };
+          if (body.existingTask) {
+            setDuplicateCandidate(mapTaskDto(body.existingTask));
+            trackEvent('task.duplicate', { title: draft.title });
+            return { duplicate: true };
+          }
         }
 
         // network failure fallback
