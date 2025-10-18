@@ -101,22 +101,22 @@ description: "Task list for Modern Todo Reminders implementation"
 
 ### Tests for User Story 2 (WRITE FIRST) ✅
 
-- [ ] T049 [P] [US2] Write Vitest component tests for TaskCard completion states in `frontend/tests/components/TaskCard.test.tsx`
-- [ ] T050 [P] [US2] Write Playwright spec for completion, undo, and delete flows in `frontend/tests/e2e/task-complete.spec.ts`
-- [ ] T051 [P] [US2] Write backend integration tests for completion and deletion endpoints in `backend/tests/integration/test_complete_task.py`
+- [X] T049 [P] [US2] Write Vitest component tests for TaskCard completion states in `frontend/tests/components/TaskCard.test.tsx`
+- [X] T050 [P] [US2] Write Playwright spec for completion, undo, and delete flows in `frontend/tests/e2e/task-complete.spec.ts`
+- [X] T051 [P] [US2] Write backend integration tests for completion and deletion endpoints in `backend/tests/integration/test_complete_task.py`
 
 ### Implementation for User Story 2
 
-- [ ] T052 [US2] Extend task service with completion, undo, and delete logic in `backend/src/services/task_service.py`
-- [ ] T053 [US2] Add `/tasks/{id}/complete` and `/tasks/{id}/undo` endpoints in `backend/src/api/routes/tasks.py`
-- [ ] T054 [US2] Implement guarded delete endpoint with reminder confirmation in `backend/src/api/routes/tasks.py`
-- [ ] T055 [P] [US2] Update API client with completion and delete methods in `frontend/src/services/api/tasksClient.ts`
-- [ ] T056 [P] [US2] Update TaskCard component with new states and reduced-motion animations in `frontend/src/components/TaskCard.tsx`
-- [ ] T057 [US2] Render completed tasks section with timestamps in `frontend/src/pages/Dashboard.tsx`
-- [ ] T058 [US2] Instrument analytics events for completion and deletion in `frontend/src/services/analytics.ts`
-- [ ] T059 [US2] Refresh TaskCard Storybook stories and visual regression in `frontend/src/components/TaskCard.stories.tsx`
-- [ ] T060 [US2] Cancel or reschedule reminders on completion/deletion in `backend/src/services/reminder_scheduler.py`
-- [ ] T061 [US2] Capture task lifecycle ADR updates in `docs/adrs/002-task-completion.md`
+- [X] T052 [US2] Extend task service with completion, undo, and delete logic in `backend/src/services/task_service.py`
+- [X] T053 [US2] Add `/tasks/{id}/complete` and `/tasks/{id}/undo` endpoints in `backend/src/api/routes/tasks.py`
+- [X] T054 [US2] Implement guarded delete endpoint with reminder confirmation in `backend/src/api/routes/tasks.py`
+- [X] T055 [P] [US2] Update API client with completion and delete methods in `frontend/src/services/api/tasksClient.ts`
+- [X] T056 [P] [US2] Update TaskCard component with new states and reduced-motion animations in `frontend/src/components/TaskCard.tsx`
+- [X] T057 [US2] Render completed tasks section with timestamps in `frontend/src/pages/Dashboard.tsx`
+- [X] T058 [US2] Instrument analytics events for completion and deletion in `frontend/src/services/analytics.ts`
+- [X] T059 [US2] Refresh TaskCard Storybook stories and visual regression in `frontend/src/components/TaskCard.stories.tsx`
+- [X] T060 [US2] Cancel or reschedule reminders on completion/deletion in `backend/src/services/reminder_scheduler.py`
+- [X] T061 [US2] Capture task lifecycle ADR updates in `docs/adrs/002-task-completion.md`
 
 **Checkpoint**: User Story 2 enables independent management of task lifecycle with analytics instrumentation.
 

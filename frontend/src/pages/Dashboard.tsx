@@ -1,17 +1,34 @@
 import React, { useState } from 'react';
 
 import ReminderToast from '../components/ReminderToast';
+import TaskCard from '../components/TaskCard';
 import TaskForm, { TaskFormPayload } from '../components/TaskForm';
 import { useTasks, type TaskDraft } from '../hooks/useTasks';
 import { trackEvent } from '../services/analytics';
 
 const Dashboard: React.FC = () => {
-  const { tasks, createTask, duplicateCandidate, clearDuplicate, isOffline, hasReminderToast } = useTasks();
+  const {
+    activeTasks,
+    completedTasks,
+    createTask,
+    completeTask,
+    undoTask,
+    deleteTask,
+    duplicateCandidate,
+    clearDuplicate,
+    isOffline,
+    hasReminderToast
+  } = useTasks();
   const [pendingDraft, setPendingDraft] = useState<TaskDraft | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const handleCreateTask = async (payload: TaskFormPayload) => {
-    const draft: TaskDraft = { title: payload.title, reminder: payload.reminder, notes: payload.notes };
+    const draft: TaskDraft = {
+      title: payload.title,
+      reminder: payload.reminder,
+      notes: payload.notes,
+      allowDuplicate: false
+    };
     setPendingDraft(draft);
     const result = await createTask(draft);
     if (result.duplicate) {
@@ -32,7 +49,13 @@ const Dashboard: React.FC = () => {
       clearDuplicate();
       return;
     }
-    const result = await createTask(pendingDraft);
+    const result = await createTask({ ...pendingDraft, allowDuplicate: true });
+    if (!result.duplicate && !result.queued && pendingDraft.reminder) {
+      const message = `Reminder set for ${new Date(pendingDraft.reminder).toLocaleString()}`;
+      setToastMessage(message);
+      trackEvent('reminder.scheduled', { title: pendingDraft.title, override: true });
+      setTimeout(() => setToastMessage(null), 3000);
+    }
     if (!result.duplicate) {
       clearDuplicate();
       setPendingDraft(null);
@@ -53,19 +76,36 @@ const Dashboard: React.FC = () => {
 
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">Active tasks</h2>
-        <ul className="space-y-2">
-          {tasks.map((task) => (
-            <li key={task.id} className="bg-slate-800 rounded-lg px-4 py-3 flex justify-between">
-              <span>{task.title}</span>
-              <div className="text-sm text-slate-400">
-                {task.reminderText && <span>{task.reminderText}</span>}
-                {task.offline && <span className="ml-3 text-amber-400">Sync pending</span>}
-              </div>
-            </li>
+        <div className="space-y-2">
+          {activeTasks.map((task) => (
+            <TaskCard
+              key={task.id}
+              task={task}
+              onComplete={completeTask}
+              onUndo={undoTask}
+              onDelete={deleteTask}
+            />
           ))}
-          {tasks.length === 0 && <p className="text-slate-500">No tasks yet—add your first reminder.</p>}
-        </ul>
+          {activeTasks.length === 0 && <p className="text-slate-500">No tasks yet—add your first reminder.</p>}
+        </div>
       </section>
+
+      {completedTasks.length > 0 && (
+        <section className="space-y-3">
+          <h2 className="text-lg font-semibold">Completed tasks</h2>
+          <div className="space-y-2">
+            {completedTasks.map((task) => (
+              <TaskCard
+                key={task.id}
+                task={task}
+                onComplete={completeTask}
+                onUndo={undoTask}
+                onDelete={deleteTask}
+              />
+            ))}
+          </div>
+        </section>
+      )}
 
       {toastMessage && hasReminderToast && <ReminderToast message={toastMessage} />}
     </main>

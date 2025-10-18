@@ -1,6 +1,9 @@
 export type AnalyticsEvent =
   | 'task.created'
   | 'task.duplicate'
+  | 'task.completed'
+  | 'task.undo'
+  | 'task.deleted'
   | 'reminder.scheduled'
   | 'reminder.interaction';
 

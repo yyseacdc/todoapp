@@ -7,6 +7,7 @@ const meta: Meta<typeof TaskForm> = {
   args: {
     onSubmit: async () => undefined,
     onDuplicateConfirm: () => undefined,
+    onDuplicateDismiss: () => undefined,
     offline: false
   }
 };
@@ -27,7 +28,8 @@ export const Duplicate: Story = {
   args: {
     duplicateCandidate: {
       id: 'duplicate-task',
-      title: 'Existing task'
+      title: 'Existing task',
+      reminderText: 'Reminder set for 2025-10-21 09:00'
     }
   }
 };

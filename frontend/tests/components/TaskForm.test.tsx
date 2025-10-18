@@ -3,8 +3,9 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import TaskForm, { TaskFormProps } from '../../src/components/TaskForm';
 
 const defaultProps: TaskFormProps = {
-  onSubmit: vi.fn(),
-  onDuplicateConfirm: vi.fn(),
+  onSubmit: vi.fn().mockResolvedValue({}),
+  onDuplicateConfirm: vi.fn().mockResolvedValue(undefined),
+  onDuplicateDismiss: vi.fn(),
   offline: false
 };
 
@@ -49,7 +50,9 @@ describe('TaskForm component', () => {
   });
 
   it('shows duplicate confirmation modal when server signals duplicate', async () => {
-    const props = setup({ duplicateCandidate: { title: 'Pay rent', id: 'task-123' } });
+    const props = setup({
+      duplicateCandidate: { title: 'Pay rent', id: 'task-123', reminderText: undefined }
+    });
 
     expect(await screen.findByText(/looks like you already created/i)).toBeInTheDocument();
 
