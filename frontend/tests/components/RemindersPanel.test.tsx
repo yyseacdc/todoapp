@@ -53,10 +53,10 @@ describe('RemindersPanel', () => {
     );
 
     expect(screen.getByText('Team standup')).toBeInTheDocument();
-    fireEvent.click(screen.getAllByText(/Snooze/)[0]);
+    fireEvent.click(screen.getAllByRole('button', { name: /Snooze/ })[0]);
     expect(snooze).toHaveBeenCalledTimes(1);
 
-    fireEvent.click(screen.getAllByText(/Dismiss/)[1]);
+    fireEvent.click(screen.getAllByRole('button', { name: /Dismiss/ })[1]);
     expect(dismiss).toHaveBeenCalledTimes(1);
   });
 });

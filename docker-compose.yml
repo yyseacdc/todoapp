@@ -2,6 +2,7 @@ version: '3.9'
 
 services:
   frontend:
+    profiles: ['dev']
     build:
       context: ./frontend
       dockerfile: Dockerfile
@@ -17,6 +18,7 @@ services:
       - backend
 
   backend:
+    profiles: ['dev']
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -26,6 +28,25 @@ services:
     volumes:
       - ./backend:/app
       - ./data:/app/data
+    environment:
+      - APP_NAME=Modern Todo Reminders
+      - API_PREFIX=/v1
+      - DATABASE_URL=sqlite+aiosqlite:///./data/todo.db
+      - REMINDER_POLL_INTERVAL=30
+
+  frontend-prod:
+    profiles: ['prod']
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - '8080:80'
+
+  backend-prod:
+    profiles: ['prod']
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     environment:
       - APP_NAME=Modern Todo Reminders
       - API_PREFIX=/v1
