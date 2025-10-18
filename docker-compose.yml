@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    command: npm run dev -- --host 0.0.0.0 --port 5173
+    ports:
+      - '5173:5173'
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8000/v1
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - '8000:8000'
+    volumes:
+      - ./backend:/app
+      - ./data:/app/data
+    environment:
+      - APP_NAME=Modern Todo Reminders
+      - API_PREFIX=/v1
+      - DATABASE_URL=sqlite+aiosqlite:///./data/todo.db
+      - REMINDER_POLL_INTERVAL=30

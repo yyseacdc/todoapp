@@ -1,0 +1,50 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-json
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.3.7
+    hooks:
+      - id: ruff
+      - id: ruff-format
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.9.0
+    hooks:
+      - id: mypy
+        additional_dependencies: []
+        files: ^backend/src/
+  - repo: local
+    hooks:
+      - id: frontend-lint
+        name: frontend lint
+        entry: npm run lint
+        language: system
+        types: [file]
+        pass_filenames: false
+        files: ^frontend/src/
+      - id: frontend-typecheck
+        name: frontend typecheck
+        entry: npm run typecheck
+        language: system
+        types: [file]
+        pass_filenames: false
+        files: ^frontend/src/
+      - id: frontend-accessibility-tests
+        name: frontend accessibility regression (Playwright)
+        entry: npm run test:a11y -- --reporter=list
+        language: system
+        pass_filenames: false
+        files: ^frontend/src/
+        stages: [manual]
+      - id: backend-tests
+        name: backend unit tests
+        entry: pytest
+        language: system
+        types: [python]
+        pass_filenames: false
+        files: ^backend/src/
