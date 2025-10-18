@@ -26,6 +26,7 @@ class TaskCreate(BaseModel):
     priority: TaskPriority = Field(default=TaskPriority.NORMAL)
     reminder: ReminderInput | None = None
     offline: bool = Field(default=False)
+    allowDuplicate: bool = Field(default=False)
 
 
 class ReminderResponse(BaseModel):

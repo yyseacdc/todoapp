@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime
 
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..models.reminder import Reminder, ReminderStatus
@@ -18,13 +19,17 @@ class TaskCreationResult:
     duplicate: Task | None = None
 
 
+class TaskNotFoundError(Exception):
+    """Raised when a task cannot be retrieved."""
+
+
 class TaskService:
     def __init__(self, session: AsyncSession) -> None:
         self.session = session
 
     async def create_task(self, payload: TaskCreate) -> TaskCreationResult:
         duplicate = await find_recent_duplicate(self.session, payload.title)
-        if duplicate:
+        if duplicate and not payload.allowDuplicate:
             log_event('task.duplicate', payload={'taskId': duplicate.id})
             return TaskCreationResult(task=None, duplicate=duplicate)
 
@@ -68,6 +73,65 @@ class TaskService:
             log_event('reminder.scheduled', payload={'taskId': task.id})
 
         return TaskCreationResult(task=task)
+
+    async def complete_task(self, task_id: str) -> Task:
+        task = await self._get_task(task_id)
+        if task.status != TaskStatus.COMPLETED:
+            task.mark_completed()
+            if task.reminder:
+                task.reminder.status = ReminderStatus.CANCELLED
+                activity = ReminderActivity(
+                    reminder=task.reminder,
+                    event_type=ReminderEvent.DISMISSED,
+                    metadata={'reason': 'task_completed'}
+                )
+                self.session.add(activity)
+                await scheduler.cancel_reminder(task.reminder.id)
+        await self.session.commit()
+        await self.session.refresh(task)
+        log_event('task.completed', payload={'taskId': task.id})
+        return task
+
+    async def undo_completion(self, task_id: str) -> Task:
+        task = await self._get_task(task_id)
+        if task.status == TaskStatus.COMPLETED:
+            task.reinstate()
+            if task.reminder:
+                task.reminder.status = ReminderStatus.SCHEDULED
+                activity = ReminderActivity(
+                    reminder=task.reminder,
+                    event_type=ReminderEvent.SCHEDULED,
+                    metadata={'reason': 'task_reopened'}
+                )
+                self.session.add(activity)
+                await scheduler.enqueue_reminder(task.reminder.id)
+        await self.session.commit()
+        await self.session.refresh(task)
+        log_event('task.undo', payload={'taskId': task.id})
+        return task
+
+    async def delete_task(self, task_id: str) -> None:
+        task = await self._get_task(task_id)
+        task.status = TaskStatus.DELETED
+        task.updated_at = datetime.utcnow()
+        if task.reminder:
+            task.reminder.status = ReminderStatus.CANCELLED
+            activity = ReminderActivity(
+                reminder=task.reminder,
+                event_type=ReminderEvent.DISMISSED,
+                metadata={'reason': 'task_deleted'}
+            )
+            self.session.add(activity)
+            await scheduler.cancel_reminder(task.reminder.id)
+        await self.session.commit()
+        log_event('task.deleted', payload={'taskId': task.id})
+
+    async def _get_task(self, task_id: str) -> Task:
+        result = await self.session.execute(select(Task).where(Task.id == task_id))
+        task = result.scalar_one_or_none()
+        if task is None:
+            raise TaskNotFoundError(task_id)
+        return task
 
     def _sanitize_title(self, title: str) -> str:
         return ' '.join(title.strip().split())
