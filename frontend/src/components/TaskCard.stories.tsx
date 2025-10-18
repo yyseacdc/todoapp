@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import TaskCard, { type TaskCardProps } from './TaskCard';
+import TaskCard from './TaskCard';
 
 const meta: Meta<typeof TaskCard> = {
   title: 'Components/TaskCard',

@@ -13,7 +13,7 @@ export interface TaskFormPayload {
 }
 
 export interface TaskFormProps {
-  onSubmit: (payload: TaskFormPayload) => Promise<{ duplicate?: boolean } | void;
+  onSubmit: (payload: TaskFormPayload) => Promise<{ duplicate?: boolean }> | void;
   onDuplicateConfirm: () => Promise<void> | void;
   onDuplicateDismiss?: () => void;
   duplicateCandidate?: DuplicateCandidate | null;
